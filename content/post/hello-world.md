@@ -46,3 +46,10 @@ How it begins
 In this post-web2.0 age, people seem to blog less and less, and blogs seem to be dying slowly. People are separated in different Apps where the content is not searchable by search engines.
 
 However, I still prefer to write using a blog.
+
+```javascript
+function hello(){
+  console.log("Hello world')
+}
+
+```

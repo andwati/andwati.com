@@ -25,6 +25,8 @@ Hi, I am a Software Engineer who is passionate about working with Python, Rust a
 
 - Twitter : https://twitter.com/andwati_
 
+- Email : andwatiian@gmail.com
+
 # Things I Like
 
 I enjoy programming. I am most familiar with Python and fairly proficient in using python and the Django web framework
