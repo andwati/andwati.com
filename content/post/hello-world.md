@@ -2,7 +2,7 @@
 title: "Hello World"
 date: 2022-11-03T23:31:26+03:00
 lastmod: 2022-11-03T23:31:26+03:00
-draft: false
+draft: true
 keywords: []
 description: "Welcome to my new blog"
 tags: ["hugo", "blog", "Go"]
