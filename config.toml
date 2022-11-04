@@ -17,7 +17,7 @@ pygmentsCodefencesGuessSyntax = true
 hasCJKLanguage = false     # has chinese/japanese/korean ? 
 paginate = 7                                             
 disqusShortname = ""      # disqus_shortname
-googleAnalytics = ""      # UA-XXXXXXXX-X
+googleAnalytics = "G-X2YZ8D1PP4"      # UA-XXXXXXXX-X
 copyright = "Ian Andwati"            # default: author.name        
 
 [author]                  # essential                     
