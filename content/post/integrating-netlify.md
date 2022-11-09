@@ -7,7 +7,7 @@ keywords: []
 description: "Migrating the content management to netlify"
 tags: ["blog", "hugo", "netlify"]
 categories: []
-author: ""
+author: "Ian Andwati"
 
 # You can also close(false) or open(true) something for this content.
 # P.S. comment can only be closed
@@ -49,3 +49,16 @@ I use [Visual Studio Code](https://code.visualstudio.com/) to manually edit the 
 markdown files. There are many problems to this approach and several gotchas. I have to work on a local site repository to be able to edit the content. My github credentials are also required to push my local changes to my remote repository on github so that it can trigger the build process and publish the site.
 
 This process has helped me alot to master markdown sysntax and some practice on my git skills. It’s fun to update the website content following these steps but sometimes it can be frustrating. At those times, I really miss the user interface of content management systems.
+
+# Redeploying to Netlify
+
+I decided to move the site from github pages to Netlify hosting to take full control of the platform.Hugo sites on Netlify can benefit from automatic framework detection and control over Hugo version selection.When you link a repository for a project, Netlify tries to detect the framework your site is using. If your site is built with Hugo, Netlify provides a suggested build command and publish directory: hugo and public. The build process is straight forward but you can add custom options to your `netflify.toml` file, here are my options:
+
+```toml
+[build]
+command = "hugo"
+publish = "public"
+
+[build.environment]
+HUGO_VERSION = "0.105.0"
+```
