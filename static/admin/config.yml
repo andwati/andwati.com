@@ -20,7 +20,12 @@ collections:
       - { label: "Draft", name: "draft", widget: "boolean", default: true }
       - { label: "Publish Date", name: "date", widget: "datetime" }
       - { label: "Last Modified", name: "lastmod", widget: "datetime" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - {
+          label: "Body",
+          name: "body",
+          widget: "markdown",
+          default: "<!--more-->",
+        }
       - { label: "Keywords", name: "keywords", widget: "list" }
       - { label: "Tags", name: "tags", widget: "list" }
       - { label: "Categories", name: "categories", widget: "list" }
