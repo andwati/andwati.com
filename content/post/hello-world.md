@@ -64,5 +64,5 @@ Hugo is one of the most popular open-source static site generators. With its ama
 
 # Blog site hosting
 
-The site is hosted on github pages as evident by the \*.github.io domain name.I prefer this mainly because it is free and I dont have
+The site is hosted on github pages as evident by the \*.github.io domain name.I prefer this mainly because it is free and I don't have
 to switch to a different hosting provider.

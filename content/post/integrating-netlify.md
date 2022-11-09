@@ -144,3 +144,44 @@ collections:
           default: true,
         }
 ```
+
+**Step 5**
+
+**Authentication**
+
+Now that the Netlify CMS files in place and configured, all that's left is to enable authentication.
+Netlify offers a built-in authentication service called Identity. In order to use it, connect your site repo with Netlify. Netlify has published a general [Step-by-Step Guide](https://www.netlify.com/blog/2016/10/27/a-step-by-step-guide-deploying-a-static-site-or-single-page-app/) for this, along with detailed guides for many popular static site generators
+
+Let’s first enable Netlify Identity and Git Gateway:
+
+- On your Netlify account, go to **Settings > Identity** and select **Enable Identity Service**
+- Under **Registration preferences**, select **Invite Only**.
+- If you want to enable login from external providers such as Google and GitHub, check the boxes you want to use, under **External Providers** section. I find it practical to log in with GitHub, so I added it.
+- Go to **Services > Git Gateway**, and click **Enable Git Gateway**. This authenticates with your Git Host and generates and APi token.
+- Everything is almost set up. What we need now is a frontend interface to connect. We will add the following script in two places, to include the **Netlify Identity Widget** on our web site:
+
+```html
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+```
+
+We wil use Netlify's [script injection](https://docs.netlify.com/site-deploys/post-processing/snippet-injection/) feature to add the script to our site.To use snippet injection, go to **Site Settings > Build & Deploy > Post processing**. Find the Snippet Injection section and select **Add Snippet**. Write a name for the script in the first box (e.g. Netlify Identity Widget). Paste the script inside the second box. Choose Insert before`</body>` option and save.
+
+Lastly, we will add the following script before the closing `<body>` tag of our website’s main index page. This script allows user to redirect back to the `/admin/` path after completing the login with the Netlify Identity Widget:
+
+```html
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", (user) => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+</script>
+```
+
+**Step 5**
+
+Now we’re all set. Since we set our registration preferences to **“Invite Only”**, we need to invite ourself as a site user. To do this, select the Identity tab from Netlify site dashboard and select the Invite Users button. Add you email address and send an invitation. You will receive an email. In your email, click **“accept the invitation”**. You will be directed to your website admin sign up panel. Choose a password. Now you are ready to log in to Netlify CMS.
