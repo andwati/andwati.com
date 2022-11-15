@@ -1,7 +1,7 @@
 ---
 layout: blog
 title: Django Secret Key Tutorial
-draft: true
+draft: false
 date: 2022-11-15T07:50:08.017Z
 lastmod: 2022-11-15T07:50:08.087Z
 keywords:
@@ -33,6 +33,15 @@ from django.core.management.utils import get_random_secret_key
 # print new random secret key
 print(get_random_secret_key())
 ```
+
+This code can be run in the terminal as a command:
+
+
+`﻿``python
+python -c 'from django.core.management.utils import get_random_secret_key; \
+            print(get_random_secret_key())'
+`﻿``
+
 
 
 `
