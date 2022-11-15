@@ -17,11 +17,11 @@ M﻿anaging the Django SECRET_KEY variable.
 
 <!--more-->
 
-T﻿he Django SECRET_KEY variable is very crucial to your Django application.The secret key must be a large random value and it must be kept secret. Leaking this value to unauthorised people could lead to a security breach.The SECRET_KEY is used in Django for cryptographic signing. It is used to generate tokens and hashes, they can be recreated using this variable. If it is not configured Django throws a ......................... error.
+T﻿he Django SECRET_KEY variable is very crucial to your Django application. The secret key must be a large random value and it must be kept secret. Leaking this value to unauthorised people could lead to a security breach.The SECRET_KEY is used in Django for cryptographic signing. It is used to generate tokens and hashes, they can be recreated using this variable. If it is not configured Django throws a `django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty` error
 
 # U﻿sing Environment Variables
 
-T﻿he secret key should not be committed to version control. It is best practice to store the value in a .env file which is added to the ,gitignore file to untrack its changes. The values can be loaded programmatically into your settings.py file. 
+T﻿he secret key should not be committed to version control. It is best practice to store the value in a .env file which is added to the  .gitignore file to untrack its changes. The values can be loaded programmatically into your settings.py file. 
 
 # G﻿enerating A New Secret Key
 
