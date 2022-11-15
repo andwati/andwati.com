@@ -27,7 +27,6 @@ T﻿he secret key should not be committed to version control. It is best practic
 
 # G﻿enerating A New Secret Key
 
-
 ```python
 from django.core.management.utils import get_random_secret_key
 # print new random secret key
@@ -36,12 +35,10 @@ print(get_random_secret_key())
 
 This code can be run in the terminal as a command:
 
+<!--StartFragment-->
 
-`﻿``python
-python -c 'from django.core.management.utils import get_random_secret_key; \
-            print(get_random_secret_key())'
-`﻿``
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 
-
+<!--EndFragment-->
 
 `
