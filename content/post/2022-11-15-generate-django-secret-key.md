@@ -7,7 +7,7 @@ lastmod: 2022-11-15T07:50:08.087Z
 keywords:
   - Django
   - python
-  - ""
+  - .env
 tags:
   - tutorial
 comment: true
@@ -22,3 +22,11 @@ T﻿he Django SECRET_KEY variable is very crucial to your Django application. Le
 # U﻿sing Environment Variables
 
 T﻿he secret key should not be committed to version control. It is best practice to store the value in a .env file which is added to the ,gitignore file to untrack its changes. The values can be loaded programmatically into your settings.py file
+
+
+
+# D﻿eleting From Source History
+
+
+
+# G﻿enerating A New Secret Key
