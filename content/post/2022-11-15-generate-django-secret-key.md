@@ -1,7 +1,7 @@
 ---
 layout: blog
 title: Django Secret Key Tutorial
-draft: true
+draft: false
 date: 2022-11-15T07:50:08.017Z
 lastmod: 2022-11-15T07:50:08.087Z
 keywords:
