@@ -49,8 +49,7 @@ python -c 'from django.core.management.utils import get_random_secret_key; \
 
 Alternatively, If you are using python 3.6+ then you can use the `secrets.token_hex(\[nbytes=None])` function:
 
-```
+```python
 python3 -c 'import secrets; print(secrets.token_hex(100))'
 ```
 
-`
