@@ -181,4 +181,4 @@ Now we’re all set. Since we set our registration preferences to **“Invite On
 
 # S﻿etting up a custom domain
 
-I﻿ bought a customdonain from [](https://namecheap.com)
+I﻿ bought a customdonain from [Namecheap](https://namecheap.com) , they provide some preety good deals. After pointing the nameserevers for the domain to the netlify nameservers, voila! everything worked smoothly. For HTTPS support, Netlify enables automatic TLS certificates with Let’s Encrypt.
