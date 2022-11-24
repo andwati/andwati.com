@@ -1,4 +1,4 @@
-baseURL = "https://andwati.github.io"
+baseURL = "https://andwati.com"
 languageCode = "en"
 defaultContentLanguage = "en"                             
 title = "Ian Andwati - Thoughts and Musings"
@@ -59,14 +59,14 @@ copyright = "Ian Andwati"            # default: author.name
 
   # site info (optional)                                  
   logoTitle = "Ian Andwati"        # default: the title value    
-  keywords = ["Ian","ian", "andwati","blog", "software engineer"]
+  keywords = ["Ian","ian", "andwati","blog", "software engineer","Ian Andwati"]
   description = "Software Engineer.Young, versatile and enthusiastic programmer and entrepreneur. I build things using technologies such as Python,Go and Rust."
 
   # paginate of archives, tags and categories             
   archivePaginate = 50
 
   # show 'xx Posts In Total' in archive page ?           
-  showArchiveCount = false
+  showArchiveCount = true
 
   # The date format to use; for a list of valid formats, see https://gohugo.io/functions/format/
   dateFormatToUse = "Mon Jan 2 2006"
@@ -140,7 +140,7 @@ copyright = "Ian Andwati"            # default: author.name
 
   [params.utterances]       # https://utteranc.es/
     owner = "andwati"              # Your GitHub ID
-    repo = "andwati.github.io"               # The repo to store comments
+    repo = "andwati.com"               # The repo to store comments
 
   [params.gitalk]           # Gitalk is a comment system based on GitHub issues. see https://github.com/gitalk/gitalk
     owner = ""              # Your GitHub ID
