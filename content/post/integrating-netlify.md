@@ -3,7 +3,7 @@ mathjaxEnableSingleDollar: false
 sequenceDiagrams:
   enable: false
   options: ""
-draft: true
+draft: false
 hiddenFromHomePage: false
 hideHeaderAndFooter: false
 postMetaInFooter: true
