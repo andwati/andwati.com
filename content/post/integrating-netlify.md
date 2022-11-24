@@ -30,6 +30,7 @@ tags:
 mathjax: false
 categories:
   - misc
+  - tutorial
 description: Migrating the content management to netlify
 ---
 Migrating to a better content management system through Netlify CMS
