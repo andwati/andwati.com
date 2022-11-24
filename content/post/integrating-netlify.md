@@ -32,7 +32,6 @@ categories:
   - misc
 description: Migrating the content management to netlify
 ---
-
 Migrating to a better content management system through Netlify CMS
 
 <!--more-->
@@ -44,12 +43,12 @@ markdown files. There are many problems to this approach and several gotchas. I 
 
 This process has helped me a lot to master markdown syntax and some practice on my git skills. It’s fun to update the website content following these steps but sometimes it can be frustrating. At those times, I really miss the user interface of content management systems. After careful consideration I moved on with Netlify CMS.At its core, Netlify CMS is an open-source React app that acts as a wrapper for the Git workflow, using the GitHub, GitLab, or Bitbucket API. This provides many advantages, including:
 
-- **Fast, web-based UI:** With rich-text editing, real-time preview, and drag-and-drop media uploads.
-- **Platform agnostic:** Works with most static site generators.
-- **Easy installation:** Add two files to your site and hook up the backend by including those files in your build process or linking to our Content Delivery Network (CDN).
-- **Modern authentication:** Using GitHub, GitLab, or Bitbucket and JSON web tokens.
-- **Flexible content types:** Specify an unlimited number of content types with custom fields.
-- **Fully extensible:** Create custom-styled previews, UI widgets, and editor plugins.
+* **Fast, web-based UI:** With rich-text editing, real-time preview, and drag-and-drop media uploads.
+* **Platform agnostic:** Works with most static site generators.
+* **Easy installation:** Add two files to your site and hook up the backend by including those files in your build process or linking to our Content Delivery Network (CDN).
+* **Modern authentication:** Using GitHub, GitLab, or Bitbucket and JSON web tokens.
+* **Flexible content types:** Specify an unlimited number of content types with custom fields.
+* **Fully extensible:** Create custom-styled previews, UI widgets, and editor plugins.
 
 # Redeploying to Netlify
 
@@ -148,11 +147,11 @@ Netlify offers a built-in authentication service called Identity. In order to us
 
 Let’s first enable Netlify Identity and Git Gateway:
 
-- On your Netlify account, go to **Settings > Identity** and select **Enable Identity Service**
-- Under **Registration preferences**, select **Invite Only**.
-- If you want to enable login from external providers such as Google and GitHub, check the boxes you want to use, under **External Providers** section. I find it practical to log in with GitHub, so I added it.
-- Go to **Services > Git Gateway**, and click **Enable Git Gateway**. This authenticates with your Git Host and generates and APi token.
-- Everything is almost set up. What we need now is a frontend interface to connect. We will add the following script in two places, to include the **Netlify Identity Widget** on our web site:
+* On your Netlify account, go to **Settings > Identity** and select **Enable Identity Service**
+* Under **Registration preferences**, select **Invite Only**.
+* If you want to enable login from external providers such as Google and GitHub, check the boxes you want to use, under **External Providers** section. I find it practical to log in with GitHub, so I added it.
+* Go to **Services > Git Gateway**, and click **Enable Git Gateway**. This authenticates with your Git Host and generates and APi token.
+* Everything is almost set up. What we need now is a frontend interface to connect. We will add the following script in two places, to include the **Netlify Identity Widget** on our web site:
 
 ```html
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -179,3 +178,7 @@ Lastly, we will add the following script before the closing `<body>` tag of our 
 **Step 5**
 
 Now we’re all set. Since we set our registration preferences to **“Invite Only”**, we need to invite ourself as a site user. To do this, select the Identity tab from Netlify site dashboard and select the Invite Users button. Add you email address and send an invitation. You will receive an email. In your email, click **“accept the invitation”**. You will be directed to your website admin sign up panel. Choose a password. Now you are ready to log in to Netlify CMS.
+
+# S﻿etting up a custom domain
+
+I﻿ bought a customdonain from [](https://namecheap.com)
