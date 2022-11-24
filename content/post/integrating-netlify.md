@@ -7,7 +7,7 @@ draft: true
 hiddenFromHomePage: false
 hideHeaderAndFooter: false
 postMetaInFooter: true
-title: Integrating Netlify
+title: Integrating Netlify CMS
 date: 2022-11-09T15:17:00+03:00
 lastmod: 2022-11-09T15:17:00+03:00
 keywords: []
