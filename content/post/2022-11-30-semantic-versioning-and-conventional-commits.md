@@ -10,3 +10,7 @@ toc: true
 A﻿dopting best practices in your git and build workflows.
 
 <!--more-->
+
+# W﻿hat is Semver?
+
+S﻿emantic versioning or just SemVer is a dependency naming guidline that aims to bring some sanity into naming libraries and packages in software development. It is a standard versioning system created by **Tom Preston Werner** (co-founder of Github) that’s used to communicate what changes are in a release.
