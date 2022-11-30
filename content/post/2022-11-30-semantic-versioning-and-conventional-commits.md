@@ -8,11 +8,14 @@ keywords:
   - git
   - semver
   - conventionalcommits
+  - professionalism
+  - workflow
 tags:
   - git
   - semver
   - conventionalcommits
-  - ""
+  - prodessionalism
+  - workflow
 categories:
   - professionalism
   - workflow
