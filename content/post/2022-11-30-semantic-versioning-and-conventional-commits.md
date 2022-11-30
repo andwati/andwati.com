@@ -95,3 +95,5 @@ The commit contains the following structural elements, to communicate intent to 
 4. types other than fix: and feat: are allowed, for example @commitlint/config-conventional (based on the Angular convention) recommends build:, chore:, ci:, docs:, style:, refactor:, perf:, test:, and others.
 5. footers other than BREAKING CHANGE: <description> may be provided and follow a convention similar to git trailer format.
 
+## Examples
+
