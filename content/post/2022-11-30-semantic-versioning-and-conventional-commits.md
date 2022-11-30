@@ -64,3 +64,10 @@ Semantic versioning is based on three numbers that indicate the versions of the 
 - **Patch -> 0**
 ---
 
+## Start at v0.1.0 or v1.0.0?
+Convention recommends that in the initial development phase the starting version should be 0.1.0 which makes sense since it’s not in production yet.
+
+The version should only be bumped to 1.0.0 only if it is being used in production and stable.
+
+If your software is being used in production, it should probably already be 1.0.0. If you have a stable API on which users have come to depend, you should be 1.0.0. If you’re worrying a lot about backwards compatibility, you should probably already be 1.0.0.
+
