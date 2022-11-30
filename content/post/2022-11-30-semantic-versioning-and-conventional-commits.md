@@ -53,6 +53,7 @@ Semantic versioning is based on three numbers that indicate the versions of the 
 - **Major -> 18**
 - **Minor -> 2**
 - **Patch -> 0**
+---
 
 #### Pipx(v1.1.0)
 
@@ -61,3 +62,5 @@ Semantic versioning is based on three numbers that indicate the versions of the 
 - **Major -> 1**
 - **Minor -> 1**
 - **Patch -> 0**
+---
+
