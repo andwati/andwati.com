@@ -4,6 +4,16 @@ title: Semantic Versioning(SemVer) and Conventional  Commits
 draft: true
 date: 2022-11-30T11:59:41.808Z
 lastmod: 2022-11-30T11:59:41.849Z
+keywords:
+  - git
+  - semver
+  - conventionalcommits
+tags:
+  - git
+  - semver
+  - conventionalcommits
+  - ""
+categories: []
 comment: true
 toc: true
 ---
