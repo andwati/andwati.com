@@ -13,7 +13,9 @@ tags:
   - semver
   - conventionalcommits
   - ""
-categories: []
+categories:
+  - professionalism
+  - workflow
 comment: true
 toc: true
 ---
