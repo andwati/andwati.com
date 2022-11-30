@@ -43,3 +43,5 @@ Semantic versioning is based on three numbers that indicate the versions of the 
 - **Major Version (X):**Introduces major changes to the code and breaking changes toward backward compatibility
 - **Minor Version (Y):** These code changes don’t introduce breaking changes. This could be adding a new feature that doesn't break changes but are not exactly bug fixes.
 - **Patches (Z):** Mainly correspond to bug fixes
+
+### Examples in common packages
