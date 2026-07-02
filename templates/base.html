@@ -190,32 +190,32 @@
         --cc-btn-primary-hover-bg: var(--accent-hover);
         --cc-btn-primary-hover-border-color: var(--accent-hover);
         --cc-toggle-on-bg: var(--accent-color);
-        --cc-font-family: 'Outfit', sans-serif;
-        --cc-btn-border-radius: 6px;
-        --cc-modal-border-radius: 10px;
+        --cc-font-family: 'Source Serif 4', Georgia, serif;
+        --cc-btn-border-radius: 2px;
+        --cc-modal-border-radius: 2px;
       }
 
       /* Dark mode — synced with html.dark via darkMode: ['class', 'dark'] */
       #cc-main.cc--darkmode {
-        --cc-bg: #111111;
-        --cc-primary-color: #f4f4f5;
-        --cc-secondary-color: #a1a1aa;
+        --cc-bg: #1b1a17;
+        --cc-primary-color: #e9e7de;
+        --cc-secondary-color: #8b8a80;
         --cc-btn-primary-bg: var(--accent-color);
         --cc-btn-primary-color: #ffffff;
         --cc-btn-primary-border-color: var(--accent-color);
         --cc-btn-primary-hover-bg: var(--accent-hover);
         --cc-btn-primary-hover-border-color: var(--accent-hover);
-        --cc-btn-secondary-bg: rgba(255,255,255,0.06);
-        --cc-btn-secondary-color: #a1a1aa;
-        --cc-btn-secondary-border-color: rgba(255,255,255,0.1);
-        --cc-btn-secondary-hover-bg: rgba(255,255,255,0.12);
-        --cc-btn-secondary-hover-color: #f4f4f5;
-        --cc-separator-border-color: rgba(255,255,255,0.1);
-        --cc-cookie-category-block-bg: rgba(255,255,255,0.04);
-        --cc-cookie-category-block-border: rgba(255,255,255,0.08);
+        --cc-btn-secondary-bg: rgba(233,231,222,0.06);
+        --cc-btn-secondary-color: #8b8a80;
+        --cc-btn-secondary-border-color: rgba(233,231,222,0.1);
+        --cc-btn-secondary-hover-bg: rgba(233,231,222,0.12);
+        --cc-btn-secondary-hover-color: #e9e7de;
+        --cc-separator-border-color: rgba(233,231,222,0.1);
+        --cc-cookie-category-block-bg: rgba(233,231,222,0.04);
+        --cc-cookie-category-block-border: rgba(233,231,222,0.08);
         --cc-toggle-on-bg: var(--accent-color);
-        --cc-footer-bg: #0a0a0a;
-        --cc-footer-border-color: rgba(255,255,255,0.08);
+        --cc-footer-bg: #131311;
+        --cc-footer-border-color: rgba(233,231,222,0.08);
       }
 
       /* Accent top border, no default box-shadow */
@@ -227,12 +227,11 @@
     {% block head %}{% endblock head %}
 
     <!-- Font preloads (eliminate FOUT on first paint) -->
-    <link rel="preload" href="{{ get_url(path="fonts/outfit/outfit-v15-latin-regular.woff2") }}" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="{{ get_url(path="fonts/jetbrains-mono/JetBrainsMono-Regular.woff2") }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ get_url(path="fonts/source-serif-4/source-serif-4-v14-latin-regular.woff2") }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ get_url(path="fonts/ibm-plex-serif/ibm-plex-serif-v20-latin-700.woff2") }}" as="font" type="font/woff2" crossorigin>
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{ get_url(path="main.css") }}">
-    <link rel="stylesheet" href="{{ get_url(path="css/syntax.css") }}">
 
     <!-- Fonts (self-hosted) -->
     <link rel="stylesheet" href="{{ get_url(path="css/fonts.css") }}">

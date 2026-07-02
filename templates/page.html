@@ -108,7 +108,6 @@
         <div class="post-meta">
             {% if page.date %}
             <span class="post-meta-item">
-                <span class="post-meta-label">Posted</span>
                 <time datetime="{{ page.date }}">{{ page.date | date(format="%B %e, %Y") }}</time>
             </span>
             {% endif %}
@@ -145,7 +144,7 @@
             <div class="post-tags">
                 {% if page.taxonomies.tags %}
                     {% for tag in page.taxonomies.tags %}
-                        <span class="tag">#{{ tag }}</span>
+                        <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="tag">#{{ tag }}</a>
                     {% endfor %}
                 {% endif %}
             </div>

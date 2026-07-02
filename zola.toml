@@ -15,7 +15,7 @@ external_links_no_referrer = true
 lazy_async_image = true
 
 [markdown.highlighting]
-theme = "catppuccin-mocha"
+theme = "gruvbox-dark-medium"
 
 [extra]
 # Analytics
@@ -27,7 +27,6 @@ author = "mockingspectre"
 
 # Profile Section (Homepage)
 show_profile = true
-avatar_url = "/images/avatar.webp"
 profile_subtitle = "offending binaries"
 
 # Social Links
@@ -40,21 +39,26 @@ email = "andwatiian@gmail.com"
 # Comments (Utterances)
 enable_comments = true
 utterances_repo = "andwati/andwati.com"
-utterances_theme = "github-dark"
+utterances_theme = "gruvbox-dark"
+utterances_theme_light = "github-light"
 
 # Navigation Menu
 [[extra.menu]]
 name = "About"
 url = "/about/"
+match = "/about"
 [[extra.menu]]
 name = "Posts"
 url = "/posts"
+match = "/posts"
 [[extra.menu]]
 name = "Tags"
 url = "/tags/"
+match = "/tags"
 [[extra.menu]]
 name = "Archive"
 url = "@/archive/_index.md"
+match = "/archive"
 
 # Features
 enable_search = true
@@ -74,8 +78,3 @@ related_posts_title = "Related Posts"
 
 # Search
 search_placeholder = "Search posts..."
-
-# 404 terminal identity
-terminal_hostname = "pwnbox"
-terminal_prompt_user = "user@blackout"
-terminal_whoami = "l0st_r3ader"

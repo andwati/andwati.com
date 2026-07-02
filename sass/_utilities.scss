@@ -1,6 +1,37 @@
+// Tag chip — a small filed label, shared by post-card and post-tags
+.tag {
+  display: inline-block;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  transition: var(--transition-smooth);
+
+  &:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+  }
+}
+
+// Heavy hairline rule — the site's one recurring structural device
+// (masthead, between list entries, above case-reference blocks)
+.rule {
+  border: none;
+  border-top: 3px solid var(--text-color);
+}
+
 // Utilities / Interactions
 .hover-scale {
-  transition: var(--transition-spring);
+  transition: transform 140ms ease-out;
+
+  &:hover {
+    transform: scale(1.02);
+  }
 
   &:active {
     transform: scale(0.98);

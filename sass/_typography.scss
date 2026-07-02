@@ -5,9 +5,10 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: var(--font-display);
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   margin-top: 2em;
   margin-bottom: 0.75em;
   overflow-wrap: break-word;
@@ -114,11 +115,11 @@ pre {
 pre {
   position: relative;
   padding: 1.25rem;
-  border-radius: 8px;
+  border-radius: 2px;
   overflow-x: auto;
   max-width: 100%;
   border: 1px solid var(--border-color);
-  background: #1e1e2e;
+  background: #282828; // Gruvbox Dark bg0 (matches [markdown.highlighting] theme)
   // Scrollbars visible on desktop, hidden on mobile
   @media (max-width: 640px) {
     scrollbar-width: none;
@@ -138,10 +139,10 @@ pre {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #cdd6f4;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  background: rgba(235, 219, 178, 0.1);
+  color: #ebdbb2;
+  border: 1px solid rgba(235, 219, 178, 0.2);
+  border-radius: 2px;
   cursor: pointer;
   opacity: 1;
   transition:
@@ -154,8 +155,8 @@ pre {
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+    background: rgba(235, 219, 178, 0.2);
+    color: #fbf1c7;
   }
 
   &.copied {
@@ -170,7 +171,7 @@ pre {
 code {
   background: var(--surface-color);
   padding: 0.2em 0.4em;
-  border-radius: 4px;
+  border-radius: 2px;
   color: var(--accent-color);
   border: 1px solid var(--border-color);
 }

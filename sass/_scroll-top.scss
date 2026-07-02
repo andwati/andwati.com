@@ -8,7 +8,7 @@
   justify-content: center;
   width: 3rem;
   height: 3rem;
-  border-radius: 50%;
+  border-radius: 2px;
   background: var(--bg-color);
   color: var(--accent-color);
   border: 1px solid var(--accent-color);
@@ -19,7 +19,11 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(1rem);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition:
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    visibility 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.2s ease-out;
 
   // Visible state triggered by JS
   &.visible {
@@ -33,7 +37,7 @@
       background: var(--accent-color);
       color: var(--bg-color);
       transform: translateY(-0.25rem);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); // Emerald glow matching accent
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 20%, transparent);
     }
 
     &:hover svg {

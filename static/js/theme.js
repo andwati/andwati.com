@@ -60,4 +60,29 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   // Initial sync in case banner is already mounted
   setTimeout(syncCCTheme, 100);
+
+  // Sync Utterances (comments iframe) theme with the site theme.
+  // The iframe only reads its initial `theme` attribute once, so later
+  // changes must go through postMessage per the utterances protocol.
+  const syncUtterancesTheme = () => {
+    const commentsEl = document.getElementById('comments');
+    const frame = document.querySelector('.utterances-frame');
+    if (!commentsEl || !frame) return;
+    const theme = htmlElement.classList.contains('dark')
+      ? commentsEl.dataset.utterancesThemeDark
+      : commentsEl.dataset.utterancesThemeLight;
+    frame.contentWindow.postMessage({ type: 'set-theme', theme }, 'https://utteranc.es');
+  };
+  new MutationObserver(syncUtterancesTheme).observe(htmlElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
+  // The iframe loads asynchronously, so poll briefly until it's mounted.
+  let utterancesTries = 0;
+  const utterancesPoll = setInterval(() => {
+    if (document.querySelector('.utterances-frame') || ++utterancesTries > 20) {
+      clearInterval(utterancesPoll);
+      syncUtterancesTheme();
+    }
+  }, 250);
 });

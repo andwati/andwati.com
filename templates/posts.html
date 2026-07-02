@@ -42,7 +42,7 @@ and offensive security.{% endblock og_description %} {% block og_url %}{% if pag
 paginator.next %}<link rel="next" href="{{ paginator.next }}" />{% endif %} {% endblock head %} {%
 block content %}
 <div class="feed-page">
-  <div class="hero" style="padding-bottom: 2rem">
+  <div class="hero hero-compact">
     <div class="hero-content">
       <h1 class="hero-title">Posts</h1>
       <p class="hero-subtitle">
@@ -55,13 +55,13 @@ block content %}
     {% for page in paginator.pages %}
     <article class="feed-item hover-scale">
       <a href="{{ page.permalink }}" class="item-link">
-        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+        <div class="item-date-row">
           <time datetime="{{ page.date }}" class="item-date"
             >{{ page.date | date(format="%b %d, %Y") }}</time
           >
           {% if page.reading_time %}
-          <span style="color: var(--text-muted); font-size: 0.85rem; opacity: 0.6;">&middot;</span>
-          <span style="color: var(--text-muted); font-size: 0.85rem; font-family: var(--font-mono);">&sim;{{ page.reading_time }} min read</span>
+          <span class="item-meta-sep">&middot;</span>
+          <span class="item-reading-time">&sim;{{ page.reading_time }} min read</span>
           {% endif %}
         </div>
         <h2 class="item-title">{{ page.title }}</h2>

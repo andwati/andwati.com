@@ -1,35 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}404 — command not found | {{ config.title }}{% endblock title %}
+{% block title %}404 — Document Not Found | {{ config.title }}{% endblock title %}
 {% block description %}The page you requested could not be found.{% endblock description %}
 
 {% block content %}
 <div class="notfound-wrap">
-  <div class="term-window" role="main" aria-label="404 error terminal">
-
-    <div class="term-titlebar" aria-hidden="true">
-      <div class="term-dots">
-        <span class="dot-red"></span>
-        <span class="dot-yellow"></span>
-        <span class="dot-green"></span>
-      </div>
-      <span class="term-titlebar-label">bash — {{ config.extra.terminal_hostname | default(value="pwnbox") }}</span>
+  <div class="case-notice">
+    <p class="case-notice-ref">STATUS: NOT FOUND</p>
+    <h1 class="case-notice-title">Document Not Found</h1>
+    <p class="case-notice-body">
+      This page couldn't be located in the archive. It may have been moved, renamed, or never filed.
+    </p>
+    <div class="case-notice-links">
+      <a href="{{ get_url(path="") }}">Home</a>
+      <a href="{{ get_url(path="/posts") }}">Posts</a>
+      <a href="{{ get_url(path="/tags") }}">Tags</a>
     </div>
-
-    <div class="term-body" id="term-body"
-      data-link-home="{{ get_url(path="") }}"
-      data-link-posts="{{ get_url(path="/posts") }}"
-      data-link-tags="{{ get_url(path="/tags") }}"
-      data-prompt="{{ config.extra.terminal_prompt_user | default(value="user@pwnbox") }}"
-      data-hostname="{{ config.extra.terminal_hostname | default(value="pwnbox") }}"
-      data-whoami="{{ config.extra.terminal_whoami | default(value="l0st_r3ader") }}">
-      <!-- lines injected by 404.js -->
-    </div>
-
   </div>
 </div>
 {% endblock content %}
-
-{% block scripts %}
-<script defer src="{{ get_url(path="js/404.js") }}"></script>
-{% endblock scripts %}

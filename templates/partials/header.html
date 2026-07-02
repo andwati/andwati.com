@@ -1,7 +1,7 @@
 <header class="site-header">
     <nav class="nav-container">
         <a href="{{ get_url(path="") }}" class="brand-link">
-            <span class="brand-text">{{ config.title | default(value="pwna4profit") }}</span>
+            <span class="brand-text">{{ config.title }}</span>
         </a>
 
         <div class="nav-right">
@@ -9,7 +9,9 @@
             <div id="nav-links" class="nav-links">
                 {% if config.extra.menu %}
                     {% for item in config.extra.menu %}
-                        <a href="{{ get_url(path=item.url) }}" class="nav-item">{{ item.name }}</a>
+                        {% set current = current_path | default(value="") %}
+                        {% set is_active = item.match and current is starting_with(item.match) %}
+                        <a href="{{ get_url(path=item.url) }}" class="nav-item{% if is_active %} is-active{% endif %}"{% if is_active %} aria-current="page"{% endif %}>{{ item.name }}</a>
                     {% endfor %}
                 {% endif %}
             </div>

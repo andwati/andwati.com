@@ -1,35 +1,46 @@
-// Premium Design Variables
+// Design Variables — "Case File": a declassified incident-report aesthetic.
+// One accent only; flat colors + hairline borders, no gradients or glass blur.
 :root {
-  --bg-color: #f9fafb;
-  --text-color: #1a1a1a;
-  --text-muted: #6b7280;
-  --accent-color: #10b981; // Emerald
-  --accent-hover: #059669; // Emerald darker
-  --surface-color: #ffffff;
-  --border-color: rgba(0, 0, 0, 0.05);
-  --shadow-color: rgba(0, 0, 0, 0.05);
+  --bg-color: #e9e9e2; // paper (cool bone, not warm cream)
+  --surface-color: #dedecf; // slightly recessed paper — cards, code blocks
+  --text-color: #17181c; // ink
+  --text-muted: #68675f; // faded ink
+  --accent-color: #b42318; // classified-stamp red
+  --accent-hover: #8e1b12;
+  --border-color: rgba(23, 24, 28, 0.16);
+  --shadow-color: rgba(23, 24, 28, 0.08);
 
-  --font-sans: 'Outfit', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Source Serif 4', Georgia, serif; // body copy
+  --font-display: 'IBM Plex Serif', Georgia, serif; // headings, masthead
+  --font-mono: 'JetBrains Mono', monospace; // case-reference lines, tags, code
 
-  --transition-spring: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
-  --scrollbar-track: #e5e7eb;
-  --scrollbar-thumb: #9ca3af;
-  --scrollbar-thumb-hover: #10b981;
+  --scrollbar-track: #dedecf;
+  --scrollbar-thumb: #b0afa2;
+  --scrollbar-thumb-hover: #b42318;
+
+  // Shared reading column — keeps the masthead rule, eyebrow, and post
+  // list aligned to the same right edge instead of drifting per-component.
+  --content-width: 700px;
 }
 
-// Dark Mode Overrides
+// Dark mode — same document, read at night
 html.dark {
-  --bg-color: #0a0a0a;
-  --text-color: #f9fafb;
-  --text-muted: #a1a1aa;
-  --surface-color: #141414;
-  --border-color: rgba(255, 255, 255, 0.1);
+  --bg-color: #131311;
+  --surface-color: #1b1a17;
+  --text-color: #e9e7de;
+  --text-muted: #8b8a80;
+  --accent-color: #ff5a46;
+  --accent-hover: #ff7c6b;
+  --border-color: rgba(233, 231, 222, 0.14);
   --shadow-color: rgba(0, 0, 0, 0.5);
 
-  --scrollbar-track: #0f0f0f;
-  --scrollbar-thumb: #2a2a2a;
-  --scrollbar-thumb-hover: #10b981;
+  --scrollbar-track: #1b1a17;
+  --scrollbar-thumb: #3a382f;
+  --scrollbar-thumb-hover: #ff5a46;
 }

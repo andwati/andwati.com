@@ -33,41 +33,17 @@ term.permalink }}{% endblock og_url %} {% block head %}
 </script>
 {% endblock head %} {% block content %}
 <div class="post-detail">
-  <header class="post-header" style="margin-bottom: 3rem">
-    <h1 class="post-title" style="font-size: clamp(2rem, 4vw, 3.5rem)">
-      <span style="color: var(--text-muted)">#</span>{{ term.name }}
-    </h1>
+  <header class="post-header list-page-header">
+    <h1 class="post-title list-page-title"><span class="term-hash">#</span>{{ term.name }}</h1>
   </header>
 
-  <div class="archive-list" style="max-width: 65ch; margin: 0 auto">
-    <div class="archive">
-      <ul
-        style="
-          list-style-type: none;
-          padding-left: 0;
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        "
-      >
+  <div class="archive-list">
+    <div class="archive-year">
+      <ul class="archive-items">
         {% for page in term.pages %}
-        <li class="hover-scale" style="display: flex; gap: 1rem; align-items: baseline">
-          <time
-            datetime="{{ page.date }}"
-            style="
-              color: var(--text-muted);
-              font-size: 0.95rem;
-              white-space: nowrap;
-              font-family: var(--font-mono);
-            "
-            >{{ page.date | date(format="%d-%b") }}</time
-          >
-          <a
-            href="{{ page.permalink }}"
-            style="color: var(--accent-color); font-weight: 500; font-size: 1.05rem"
-            >{{ page.title }}</a
-          >
+        <li class="archive-item hover-scale">
+          <time datetime="{{ page.date }}" class="archive-date">{{ page.date | date(format="%d-%b") }}</time>
+          <a href="{{ page.permalink }}" class="archive-link">{{ page.title }}</a>
         </li>
         {% endfor %}
       </ul>

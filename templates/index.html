@@ -30,11 +30,13 @@ block og_url %}{{ config.base_url }}/{% endblock og_url %} {% block head %}
 </script>
 {% endblock head %} {% block content %} {% include "partials/profile.html" %}
 
-<div
-  class="post-feed-list"
-  style="max-width: 65ch; margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem"
->
-  {% set section = get_section(path="posts/_index.md") %}
+{% set section = get_section(path="posts/_index.md") %}
+<p class="feed-eyebrow">
+  <span>Recent Entries</span>
+  <span>{{ section.pages | length }} filed</span>
+</p>
+
+<div class="post-feed-list">
   {% set post_limit = config.extra.homepage_post_limit | default(value=3) %}
   {% for page in section.pages | slice(end=post_limit) %} {% include "partials/post-card.html" %} {% endfor %}
 </div>
