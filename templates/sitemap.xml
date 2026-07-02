@@ -8,7 +8,7 @@
         {% elif sitemap_entry.date %}
         <lastmod>{{ sitemap_entry.date }}</lastmod>
         {% endif %}
-        {% if sitemap_entry.permalink == "https://andwati.xyz/" %}
+        {% if sitemap_entry.permalink == "https://andwati.com/" %}
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
         {% else %}

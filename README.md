@@ -1,1 +1,1 @@
-# andwati.xyz
+# andwati.com
