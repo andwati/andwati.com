@@ -46,7 +46,15 @@
   letter-spacing: 0.02em;
 
   a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     color: var(--text-muted);
+    transition: var(--transition-smooth);
+
+    svg {
+      flex-shrink: 0;
+    }
 
     &:hover {
       color: var(--accent-color);

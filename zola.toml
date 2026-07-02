@@ -70,6 +70,7 @@ twitter_handle = "@andwati_"
 
 # Homepage
 homepage_post_limit = 3
+homepage_feed_heading = "Latest"
 view_all_posts_label = "View all posts"
 
 # Related posts
@@ -78,3 +79,20 @@ related_posts_title = "Related Posts"
 
 # Search
 search_placeholder = "Search posts..."
+
+# Page copy
+posts_page_title = "Posts"
+posts_page_subtitle = "Exploring binary exploitation, reverse engineering, and offensive security."
+archive_page_title = "Archive"
+tags_page_title = "All Tags"
+toc_title = "Table of Contents"
+toc_sidebar_title = "Contents"
+series_label = "Series"
+post_nav_prev_label = "Previous"
+post_nav_next_label = "Next"
+share_label = "Share:"
+
+# 404 page
+notfound_status = "Status: Not Found"
+notfound_title = "Document Not Found"
+notfound_body = "This page couldn't be located in the archive. It may have been moved, renamed, or never filed."

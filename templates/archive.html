@@ -2,7 +2,7 @@
 %} {% block content %}
 <div class="post-detail">
   <header class="post-header list-page-header">
-    <h1 class="post-title list-page-title">Archive</h1>
+    <h1 class="post-title list-page-title">{{ config.extra.archive_page_title | default(value="Archive") }}</h1>
   </header>
 
   <div class="archive-list">

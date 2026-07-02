@@ -1,6 +1,6 @@
 {% if page.toc %}
 <details class="post-toc">
-  <summary>Table of Contents</summary>
+  <summary>{{ config.extra.toc_title | default(value="Table of Contents") }}</summary>
   <ul>
     {% for h1 in page.toc %}
     <li>

@@ -20,7 +20,7 @@ og_description %} {% block og_url %}{{ config.base_url }}/tags/{% endblock og_ur
 {% endblock head %} {% block content %}
 <div class="tags-page">
   <header class="page-header tags-page-header">
-    <h1 class="page-title">All Tags</h1>
+    <h1 class="page-title">{{ config.extra.tags_page_title | default(value="All Tags") }}</h1>
   </header>
 
   <div class="tags-container">

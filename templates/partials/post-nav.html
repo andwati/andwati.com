@@ -2,14 +2,14 @@
 <nav class="post-nav" aria-label="Post navigation">
   {% if page.higher %}
   <a class="post-nav-link post-nav-prev hover-scale" href="{{ page.higher.permalink }}">
-    <span class="post-nav-label">&larr; Previous</span>
+    <span class="post-nav-label">&larr; {{ config.extra.post_nav_prev_label | default(value="Previous") }}</span>
     <span class="post-nav-title">{{ page.higher.title }}</span>
   </a>
   {% endif %}
-  
+
   {% if page.lower %}
   <a class="post-nav-link post-nav-next hover-scale" href="{{ page.lower.permalink }}">
-    <span class="post-nav-label">Next &rarr;</span>
+    <span class="post-nav-label">{{ config.extra.post_nav_next_label | default(value="Next") }} &rarr;</span>
     <span class="post-nav-title">{{ page.lower.title }}</span>
   </a>
   {% endif %}

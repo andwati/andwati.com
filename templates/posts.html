@@ -1,22 +1,22 @@
-{% extends "base.html" %} {% block title %}Posts{% if paginator.current_index > 1 %} — Page {{
+{% extends "base.html" %} {% block title %}{{ config.extra.posts_page_title | default(value="Posts") }}{% if paginator.current_index > 1 %} — Page {{
 paginator.current_index }}{% endif %} | {{ config.title }}{% endblock title %} {% block description
-%}Browse all posts on {{ config.title }} — binary exploitation, reverse engineering, and offensive
-security.{% endblock description %} {% block canonical %}{% if paginator.current_index == 1 %}{{
+%}{{ config.extra.posts_page_subtitle | default(value="Exploring binary exploitation, reverse engineering, and offensive security.") }}{% endblock description %} {% block canonical %}{% if paginator.current_index == 1 %}{{
 config.base_url }}/posts/{% else %}{{ paginator.first }}page/{{ paginator.current_index }}/{% endif
-%}{% endblock canonical %} {% block og_title %}Posts{% if paginator.current_index > 1 %} — Page {{
+%}{% endblock canonical %} {% block og_title %}{{ config.extra.posts_page_title | default(value="Posts") }}{% if paginator.current_index > 1 %} — Page {{
 paginator.current_index }}{% endif %} | {{ config.title }}{% endblock og_title %} {% block
-og_description %}Browse all posts on {{ config.title }} — binary exploitation, reverse engineering,
-and offensive security.{% endblock og_description %} {% block og_url %}{% if paginator.current_index
+og_description %}{{ config.extra.posts_page_subtitle | default(value="Exploring binary exploitation, reverse engineering, and offensive security.") }}{% endblock og_description %} {% block og_url %}{% if paginator.current_index
 == 1 %}{{ config.base_url }}/posts/{% else %}{{ paginator.first }}page/{{ paginator.current_index
 }}/{% endif %}{% endblock og_url %} {% block head %}
+{% set posts_page_title = config.extra.posts_page_title | default(value="Posts") %}
+{% set posts_page_subtitle = config.extra.posts_page_subtitle | default(value="Exploring binary exploitation, reverse engineering, and offensive security.") %}
 <!-- SEO: CollectionPage JSON-LD -->
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "@id": "{{ config.base_url }}/posts/#collection",
-    "name": "Posts | {{ config.title }}",
-    "description": "Browse all posts on {{ config.title }}",
+    "name": "{{ posts_page_title }} | {{ config.title }}",
+    "description": {{ posts_page_subtitle | json_encode }},
     "url": "{{ config.base_url }}/posts/",
     "inLanguage": "en-US",
     "isPartOf": {
@@ -44,9 +44,9 @@ block content %}
 <div class="feed-page">
   <div class="hero hero-compact">
     <div class="hero-content">
-      <h1 class="hero-title">Posts</h1>
+      <h1 class="hero-title">{{ config.extra.posts_page_title | default(value="Posts") }}</h1>
       <p class="hero-subtitle">
-        Exploring binary exploitation, reverse engineering, and offensive security.
+        {{ config.extra.posts_page_subtitle | default(value="Exploring binary exploitation, reverse engineering, and offensive security.") }}
       </p>
     </div>
   </div>

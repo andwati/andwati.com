@@ -1,5 +1,5 @@
 <div class="social-share">
-  <span class="share-label">Share:</span>
+  <span class="share-label">{{ config.extra.share_label | default(value="Share:") }}</span>
   <a
     href="https://twitter.com/intent/tweet?text={{ page.title | urlencode }}&url={{ page.permalink | urlencode }}"
     target="_blank"

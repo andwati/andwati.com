@@ -11,7 +11,7 @@
 
 <div class="series-nav" aria-label="Post series: {{ page.extra.series }}">
   <div class="series-nav-header">
-    <span class="series-nav-eyebrow">Series</span>
+    <span class="series-nav-eyebrow">{{ config.extra.series_label | default(value="Series") }}</span>
     <span class="series-nav-title">{{ page.extra.series }}</span>
     <span class="series-nav-badge">{{ page.extra.series_index }} / {{ series_total }}</span>
   </div>

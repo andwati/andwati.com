@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}404 — Document Not Found | {{ config.title }}{% endblock title %}
-{% block description %}The page you requested could not be found.{% endblock description %}
+{% block title %}404 — {{ config.extra.notfound_title | default(value="Document Not Found") }} | {{ config.title }}{% endblock title %}
+{% block description %}{{ config.extra.notfound_body | default(value="The page you requested could not be found.") }}{% endblock description %}
 
 {% block content %}
 <div class="notfound-wrap">
   <div class="case-notice">
-    <p class="case-notice-ref">STATUS: NOT FOUND</p>
-    <h1 class="case-notice-title">Document Not Found</h1>
+    <p class="case-notice-ref">{{ config.extra.notfound_status | default(value="Status: Not Found") }}</p>
+    <h1 class="case-notice-title">{{ config.extra.notfound_title | default(value="Document Not Found") }}</h1>
     <p class="case-notice-body">
-      This page couldn't be located in the archive. It may have been moved, renamed, or never filed.
+      {{ config.extra.notfound_body | default(value="This page couldn't be located in the archive. It may have been moved, renamed, or never filed.") }}
     </p>
     <div class="case-notice-links">
       <a href="{{ get_url(path="") }}">Home</a>
