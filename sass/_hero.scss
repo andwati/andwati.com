@@ -17,11 +17,9 @@
   color: var(--text-muted);
 }
 
-// Homepage masthead
+// Homepage masthead — spans the full width of .site-container, matching the navbar
 .masthead {
   padding: 4rem 0 3rem;
-  max-width: var(--content-width);
-  border-bottom: 3px solid var(--text-color);
 }
 
 .masthead-kicker {

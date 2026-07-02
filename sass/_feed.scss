@@ -23,8 +23,8 @@
 // Homepage "View all posts" CTA
 .view-all-posts {
   display: flex;
+  justify-content: center;
   margin-top: 3rem;
-  max-width: var(--content-width);
 }
 
 .btn-view-all {
@@ -62,21 +62,12 @@
 }
 
 // Homepage post list (post-card.html) — a numbered index of entries
-.feed-eyebrow {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  max-width: var(--content-width);
-  margin-bottom: 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
+.feed-heading {
+  font-size: 1.1rem;
+  margin: 0 0 1.5rem;
 }
 
 .post-feed-list {
-  max-width: var(--content-width);
   display: flex;
   flex-direction: column;
 }

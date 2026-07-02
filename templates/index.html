@@ -31,10 +31,7 @@ block og_url %}{{ config.base_url }}/{% endblock og_url %} {% block head %}
 {% endblock head %} {% block content %} {% include "partials/profile.html" %}
 
 {% set section = get_section(path="posts/_index.md") %}
-<p class="feed-eyebrow">
-  <span>Recent Entries</span>
-  <span>{{ section.pages | length }} filed</span>
-</p>
+<h2 class="feed-heading">Latest</h2>
 
 <div class="post-feed-list">
   {% set post_limit = config.extra.homepage_post_limit | default(value=3) %}
