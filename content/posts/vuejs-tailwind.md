@@ -1,7 +1,7 @@
 +++
 title = "Configure Vue.js app With Tailwind CSS"
 description = "Tailwindcss in vuejs "
-author = "mockingspectre"
+author = "andwati"
 date = 2021-06-12
 [taxonomies]
 tags = ["javascript", "vuejs", "tailwindcss"]

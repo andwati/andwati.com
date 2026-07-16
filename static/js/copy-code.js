@@ -8,6 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 
   preBlocks.forEach((pre) => {
+    // Wrap the <pre> so the button can sit outside its horizontal
+    // scroll container — a child of pre would scroll along with the code.
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+
     // Create the copy button
     const button = document.createElement('button');
     button.innerHTML = copyIcon;
@@ -15,9 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     button.setAttribute('aria-label', 'Copy code');
     button.setAttribute('title', 'Copy code');
 
-    // Add the button to the <pre> block
-    // Assuming pre is position relative in CSS
-    pre.appendChild(button);
+    wrapper.appendChild(button);
 
     button.addEventListener('click', async () => {
       // Find the <code> element within the <pre>

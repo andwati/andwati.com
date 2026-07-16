@@ -23,7 +23,8 @@ google_analytics = "G-4HGRQ9QNPD"
 google_site_verification = ""
 
 # Author Information
-author = "mockingspectre"
+author = "andwati"
+copyright_start_year = 2021
 
 # Profile Section (Homepage)
 show_profile = true

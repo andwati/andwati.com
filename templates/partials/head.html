@@ -64,7 +64,7 @@
     {
       "@type": "Person",
       "@id": "{{ config.base_url }}/#author",
-      "name": "{{ config.extra.author | default(value="mockingspectre") }}",
+      "name": "{{ config.extra.author | default(value="andwati") }}",
       "url": "{{ config.base_url }}/about/",
       "sameAs": [
         {% if config.extra.github_url %}"{{ config.extra.github_url }}"{% if config.extra.twitter_url or config.extra.youtube_url %},{% endif %}{% endif %}

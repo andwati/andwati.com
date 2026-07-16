@@ -1,7 +1,7 @@
 +++
 title = "File over app"
 description = "Take control of your artifacts"
-author = "mockingspectre"
+author = "andwati"
 draft = true
 date = 2023-12-18
 [taxonomies]

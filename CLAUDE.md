@@ -27,7 +27,7 @@ Deployment is via Cloudflare (`wrangler.toml`, `npm run deploy` → `zola build 
   +++
   title = "..."
   description = "..."
-  author = "mockingspectre"
+  author = "andwati"
   date = YYYY-MM-DD
   [taxonomies]
   tags = ["..."]

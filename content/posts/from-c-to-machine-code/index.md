@@ -1,7 +1,7 @@
 +++
 title = "From C to Machine Code: What Actually Runs"
 description = "Before diving into how to break a program, we need to understand what the computer is actually executing"
-author = "mockingspectre"
+author = "andwati"
 date = 2026-04-08
 [taxonomies]
 tags = ["assembly", "rev", "pwn"]

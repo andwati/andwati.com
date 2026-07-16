@@ -1,7 +1,7 @@
 +++
 title = "Django Secret Key Tutorial"
 description = "Managing secrets"
-author = "mockingspectre"
+author = "andwati"
 date = 2022-11-11T15:34:14.160Z
 [taxonomies]
 tags = ["tutorial", "django", "python", ".env"]

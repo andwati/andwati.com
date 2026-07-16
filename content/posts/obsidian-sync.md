@@ -1,7 +1,7 @@
 +++
 title = "Setting up Obsidian sync in Windows"
 description = "Syncing Obsidian in Windows with Windows Task Scheduler with git"
-author = "mockingspectre"
+author = "andwati"
 date = 2023-10-01
 [taxonomies]
 tags = ["obsidian", "git", "sync", "windows", "cron", "task scheduler", "powershell"]

@@ -1,7 +1,7 @@
 +++
 title = "cognitive inertia"
 description = "inertia"
-author = "mockingspectre"
+author = "andwati"
 date = 2025-02-26
 [taxonomies]
 tags = ["cognition"]

@@ -2,7 +2,7 @@
 title = "Hello World"
 description = "Hello world"
 date = 2022-11-04
-author = "mockingspectre"
+author = "andwati"
 [taxonomies]
 tags = ["hugo", "blog", "go"]
 +++

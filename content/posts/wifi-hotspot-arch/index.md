@@ -1,7 +1,7 @@
 +++
 title = "The One Thing Nobody Tells You About WiFi Hotspots on Arch Linux"
 description = "A minimal Arch install is great until NetworkManager silently fails to find a binary you didn't know you needed"
-author = "mockingspectre"
+author = "andwati"
 date = 2026-04-16
 [taxonomies]
 tags = ["arch", "linux", "networking", "kde"]

@@ -40,8 +40,16 @@ p,
 ul,
 ol,
 figure,
-blockquote {
+blockquote,
+pre,
+table {
   margin-bottom: 1.5rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2rem 0;
 }
 
 p {
@@ -112,8 +120,11 @@ pre {
   font-variant-ligatures: contextual;
 }
 
-pre {
+.code-block-wrapper {
   position: relative;
+}
+
+pre {
   padding: 1.25rem;
   border-radius: 2px;
   overflow-x: auto;

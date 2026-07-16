@@ -1,7 +1,9 @@
 <footer class="site-footer">
   <div class="footer-content">
     <p>
-      &copy; {{ now() | date(format="%Y") }} {{ config.extra.author | default(value="Author") }}
+      {% set current_year = now() | date(format="%Y") | int %}
+      {% set start_year = config.extra.copyright_start_year | default(value=current_year) | int %}
+      &copy; {% if start_year != current_year %}{{ start_year }}&ndash;{% endif %}{{ current_year }} {{ config.extra.author | default(value="Author") }}
     </p>
     <div class="social-links">
       <!-- Social Links -->

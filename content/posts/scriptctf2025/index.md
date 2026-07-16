@@ -1,7 +1,7 @@
 +++
 title = "ScriptCTF 2025 Writeup"
 description = "ScriptCTF 2025 Writeup"
-author = "mockingspectre"
+author = "andwati"
 date = 2025-08-18
 [taxonomies]
 tags = ["ctf", "rev", "web", "forensics"]
