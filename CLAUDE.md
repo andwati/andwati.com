@@ -52,3 +52,7 @@ All site-wide behavior/config (analytics, author/profile info, social links, nav
 ## Agent skills
 
 `.agents/skills/` contains pulled-in skills (`animation-vocabulary`, `emil-design-eng`, `review-animations`) tracked via `skills-lock.json`, useful for UI/animation review and design-engineering guidance when touching templates or Sass.
+
+## Git commits
+
+Never add `Co-Authored-By: Claude` (or any other Claude/Anthropic self-attribution) to commit messages. Write commit messages as if authored solely by the user.
