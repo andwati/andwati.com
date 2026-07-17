@@ -9,27 +9,29 @@ og_description %}{{ config.extra.posts_page_subtitle | default(value="Exploring 
 }}/{% endif %}{% endblock og_url %} {% block head %}
 {% set posts_page_title = config.extra.posts_page_title | default(value="Posts") %}
 {% set posts_page_subtitle = config.extra.posts_page_subtitle | default(value="Exploring binary exploitation, reverse engineering, and offensive security.") %}
+{% set posts_ld_name = posts_page_title ~ " | " ~ config.title %}
 <!-- SEO: CollectionPage JSON-LD -->
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": "{{ config.base_url }}/posts/#collection",
-    "name": "{{ posts_page_title }} | {{ config.title }}",
-    "description": {{ posts_page_subtitle | json_encode }},
-    "url": "{{ config.base_url }}/posts/",
+    "@id": "{{ config.base_url | safe }}/posts/#collection",
+    "name": {{ posts_ld_name | json_encode | safe }},
+    "description": {{ posts_page_subtitle | json_encode | safe }},
+    "url": "{{ config.base_url | safe }}/posts/",
     "inLanguage": "en-US",
     "isPartOf": {
       "@type": "WebSite",
-      "@id": "{{ config.base_url }}/#website"
+      "@id": "{{ config.base_url | safe }}/#website"
     },
     "hasPart": [
       {% for page in paginator.pages %}
       {
         "@type": "BlogPosting",
-        "@id": "{{ page.permalink }}#article",
-        "headline": {{ page.title | json_encode }},
-        "url": "{{ page.permalink }}"
+        "@id": "{{ page.permalink | safe }}#article",
+        "headline": {{ page.title | json_encode | safe }},
+        "image": "{{ config.base_url | safe }}/images/og-image.png",
+        "url": "{{ page.permalink | safe }}"
         {% if page.date %},"datePublished": "{{ page.date | date(format="%+") }}"{% endif %}
       }{% if not loop.last %},{% endif %}
       {% endfor %}

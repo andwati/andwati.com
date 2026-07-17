@@ -47,29 +47,29 @@
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "{{ config.base_url }}/#website",
-      "url": "{{ config.base_url }}/",
-      "name": "{{ config.title }}",
-      "description": "{{ config.description }}",
+      "@id": "{{ config.base_url | safe }}/#website",
+      "url": "{{ config.base_url | safe }}/",
+      "name": {{ config.title | json_encode | safe }},
+      "description": {{ config.description | json_encode | safe }},
       "inLanguage": "en-US",
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "{{ config.base_url }}/posts?q={search_term_string}"
+          "urlTemplate": "{{ config.base_url | safe }}/posts?q={search_term_string}"
         },
         "query-input": "required name=search_term_string"
       }
     },
     {
       "@type": "Person",
-      "@id": "{{ config.base_url }}/#author",
-      "name": "{{ config.extra.author | default(value="andwati") }}",
-      "url": "{{ config.base_url }}/about/",
+      "@id": "{{ config.base_url | safe }}/#author",
+      "name": {{ config.extra.author | default(value="andwati") | json_encode | safe }},
+      "url": "{{ config.base_url | safe }}/about/",
       "sameAs": [
-        {% if config.extra.github_url %}"{{ config.extra.github_url }}"{% if config.extra.twitter_url or config.extra.youtube_url %},{% endif %}{% endif %}
-        {% if config.extra.twitter_url %}"{{ config.extra.twitter_url }}"{% if config.extra.youtube_url %},{% endif %}{% endif %}
-        {% if config.extra.youtube_url %}"{{ config.extra.youtube_url }}"{% endif %}
+        {% if config.extra.github_url %}"{{ config.extra.github_url | safe }}"{% if config.extra.twitter_url or config.extra.youtube_url %},{% endif %}{% endif %}
+        {% if config.extra.twitter_url %}"{{ config.extra.twitter_url | safe }}"{% if config.extra.youtube_url %},{% endif %}{% endif %}
+        {% if config.extra.youtube_url %}"{{ config.extra.youtube_url | safe }}"{% endif %}
       ]
     }
   ]

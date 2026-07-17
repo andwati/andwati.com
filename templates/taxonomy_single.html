@@ -4,27 +4,30 @@ description %} {% block canonical %}{{ term.permalink }}{% endblock canonical %}
 %}Tag: {{ term.name }} | {{ config.title }}{% endblock og_title %} {% block og_description %}Posts
 tagged "{{ term.name }}" on {{ config.title }}{% endblock og_description %} {% block og_url %}{{
 term.permalink }}{% endblock og_url %} {% block head %}
+{% set tag_ld_name = 'Posts tagged "' ~ term.name ~ '" | ' ~ config.title %}
+{% set tag_ld_description = 'Posts tagged "' ~ term.name ~ '" on ' ~ config.title %}
 <!-- SEO: Tag CollectionPage JSON-LD -->
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": "{{ term.permalink }}#collection",
-    "name": "Posts tagged \"{{ term.name }}\" | {{ config.title }}",
-    "description": "Posts tagged \"{{ term.name }}\" on {{ config.title }}",
-    "url": "{{ term.permalink }}",
+    "@id": "{{ term.permalink | safe }}#collection",
+    "name": {{ tag_ld_name | json_encode | safe }},
+    "description": {{ tag_ld_description | json_encode | safe }},
+    "url": "{{ term.permalink | safe }}",
     "inLanguage": "en-US",
     "isPartOf": {
       "@type": "WebSite",
-      "@id": "{{ config.base_url }}/#website"
+      "@id": "{{ config.base_url | safe }}/#website"
     },
     "hasPart": [
       {% for page in term.pages %}
       {
         "@type": "BlogPosting",
-        "@id": "{{ page.permalink }}#article",
-        "headline": {{ page.title | json_encode }},
-        "url": "{{ page.permalink }}"
+        "@id": "{{ page.permalink | safe }}#article",
+        "headline": {{ page.title | json_encode | safe }},
+        "image": "{{ config.base_url | safe }}/images/og-image.png",
+        "url": "{{ page.permalink | safe }}"
         {% if page.date %},"datePublished": "{{ page.date | date(format="%+") }}"{% endif %}
       }{% if not loop.last %},{% endif %}
       {% endfor %}

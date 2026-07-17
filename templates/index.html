@@ -5,23 +5,24 @@ block og_url %}{{ config.base_url }}/{% endblock og_url %} {% block head %}
   {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "@id": "{{ config.base_url }}/#blog",
-    "name": "{{ config.title }}",
-    "description": "{{ config.description }}",
-    "url": "{{ config.base_url }}/",
+    "@id": "{{ config.base_url | safe }}/#blog",
+    "name": {{ config.title | json_encode | safe }},
+    "description": {{ config.description | json_encode | safe }},
+    "url": "{{ config.base_url | safe }}/",
     "inLanguage": "en-US",
     "author": {
       "@type": "Person",
-      "@id": "{{ config.base_url }}/#author"
+      "@id": "{{ config.base_url | safe }}/#author"
     },
     "blogPost": [
       {% set section = get_section(path="posts/_index.md") %}
       {% for page in section.pages %}
       {
         "@type": "BlogPosting",
-        "@id": "{{ page.permalink }}#article",
-        "headline": {{ page.title | json_encode }},
-        "url": "{{ page.permalink }}"
+        "@id": "{{ page.permalink | safe }}#article",
+        "headline": {{ page.title | json_encode | safe }},
+        "image": "{{ config.base_url | safe }}/images/og-image.png",
+        "url": "{{ page.permalink | safe }}"
         {% if page.date %},"datePublished": "{{ page.date | date(format="%+") }}"{% endif %}
       }{% if not loop.last %},{% endif %}
       {% endfor %}

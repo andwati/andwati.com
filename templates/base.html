@@ -7,6 +7,14 @@
     <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
     <meta name="view-transition" content="same-origin">
 
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#131311">
+
     <!-- Canonical URL -->
     <link rel="canonical" href="{% block canonical %}{{ config.base_url }}/{% endblock canonical %}">
 
@@ -56,21 +64,21 @@
       "@graph": [
         {
           "@type": "WebSite",
-          "@id": "{{ config.base_url }}/#website",
-          "url": "{{ config.base_url }}/",
-          "name": "{{ config.title }}",
-          "description": "{{ config.description }}",
+          "@id": "{{ config.base_url | safe }}/#website",
+          "url": "{{ config.base_url | safe }}/",
+          "name": {{ config.title | json_encode | safe }},
+          "description": {{ config.description | json_encode | safe }},
           "inLanguage": "en-US"
         },
         {
           "@type": "Person",
-          "@id": "{{ config.base_url }}/#author",
-          "name": "{{ config.extra.author | default(value="andwati") }}",
-          "url": "{{ config.base_url }}/about/",
+          "@id": "{{ config.base_url | safe }}/#author",
+          "name": {{ config.extra.author | default(value="andwati") | json_encode | safe }},
+          "url": "{{ config.base_url | safe }}/about/",
           "sameAs": [
-            {% if config.extra.github_url %}"{{ config.extra.github_url }}"{% if config.extra.twitter_url or config.extra.youtube_url %},{% endif %}{% endif %}
-            {% if config.extra.twitter_url %}"{{ config.extra.twitter_url }}"{% if config.extra.youtube_url %},{% endif %}{% endif %}
-            {% if config.extra.youtube_url %}"{{ config.extra.youtube_url }}"{% endif %}
+            {% if config.extra.github_url %}"{{ config.extra.github_url | safe }}"{% if config.extra.twitter_url or config.extra.youtube_url %},{% endif %}{% endif %}
+            {% if config.extra.twitter_url %}"{{ config.extra.twitter_url | safe }}"{% if config.extra.youtube_url %},{% endif %}{% endif %}
+            {% if config.extra.youtube_url %}"{{ config.extra.youtube_url | safe }}"{% endif %}
           ]
         }
       ]

@@ -1,5 +1,9 @@
 {% extends "base.html" %} {% block title %}{{ section.title }} | {{ config.title }}{% endblock title
-%} {% block content %}
+%} {% block description %}Chronological archive of every post on {{ config.title }}.{% endblock
+description %} {% block canonical %}{{ section.permalink }}{% endblock canonical %} {% block og_title
+%}{{ section.title }} | {{ config.title }}{% endblock og_title %} {% block og_description %}Chronological
+archive of every post on {{ config.title }}.{% endblock og_description %} {% block og_url %}{{
+section.permalink }}{% endblock og_url %} {% block content %}
 <div class="post-detail">
   <header class="post-header list-page-header">
     <h1 class="post-title list-page-title">{{ config.extra.archive_page_title | default(value="Archive") }}</h1>

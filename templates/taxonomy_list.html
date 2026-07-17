@@ -10,10 +10,10 @@ og_description %} {% block og_url %}{{ config.base_url }}/tags/{% endblock og_ur
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": "{{ config.base_url }}/tags/#collection",
+    "@id": "{{ config.base_url | safe }}/tags/#collection",
     "name": "Tags | {{ config.title }}",
     "description": "Browse all tags on {{ config.title }}",
-    "url": "{{ config.base_url }}/tags/",
+    "url": "{{ config.base_url | safe }}/tags/",
     "inLanguage": "en-US"
   }
 </script>

@@ -30,37 +30,38 @@
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "@id": "{{ page.permalink }}#article",
+    "@id": "{{ page.permalink | safe }}#article",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "{{ page.permalink }}"
+      "@id": "{{ page.permalink | safe }}"
     },
-    "headline": {{ page.title | json_encode }},
-    "description": {{ page.description | default(value=config.description) | json_encode }},
-    "url": "{{ page.permalink }}",
+    "headline": {{ page.title | json_encode | safe }},
+    "description": {{ page.description | default(value=config.description) | json_encode | safe }},
+    "image": "{{ config.base_url | safe }}/images/og-image.png",
+    "url": "{{ page.permalink | safe }}",
     "inLanguage": "en-US",
     {% if page.date %}"datePublished": "{{ page.date | date(format="%+") }}",{% endif %}
     {% if page.updated %}"dateModified": "{{ page.updated | date(format="%+") }}",{% else %}{% if page.date %}"dateModified": "{{ page.date | date(format="%+") }}",{% endif %}{% endif %}
     "author": {
       "@type": "Person",
-      "@id": "{{ config.base_url }}/#author",
-      "name": "{{ config.extra.author | default(value="andwati") }}",
-      "url": "{{ config.base_url }}/about/"
+      "@id": "{{ config.base_url | safe }}/#author",
+      "name": {{ config.extra.author | default(value="andwati") | json_encode | safe }},
+      "url": "{{ config.base_url | safe }}/about/"
     },
     "publisher": {
       "@type": "Person",
-      "@id": "{{ config.base_url }}/#author",
-      "name": "{{ config.extra.author | default(value="andwati") }}",
-      "url": "{{ config.base_url }}/about/"
+      "@id": "{{ config.base_url | safe }}/#author",
+      "name": {{ config.extra.author | default(value="andwati") | json_encode | safe }},
+      "url": "{{ config.base_url | safe }}/about/"
     },
     "isPartOf": {
       "@type": "Blog",
-      "@id": "{{ config.base_url }}/#blog",
-      "name": "{{ config.title }}",
-      "url": "{{ config.base_url }}/"
+      "@id": "{{ config.base_url | safe }}/#blog",
+      "name": {{ config.title | json_encode | safe }},
+      "url": "{{ config.base_url | safe }}/"
     }
     {% if page.taxonomies.tags %}
-    ,"keywords": [{% for tag in page.taxonomies.tags %}"{{ tag }}"{% if not loop.last %},{% endif %}{% endfor %}]
+    ,"keywords": [{% for tag in page.taxonomies.tags %}{{ tag | json_encode | safe }}{% if not loop.last %},{% endif %}{% endfor %}]
     {% endif %}
   }
   </script>
