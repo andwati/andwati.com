@@ -93,6 +93,14 @@ post_nav_prev_label = "Previous"
 post_nav_next_label = "Next"
 share_label = "Share:"
 
+# Per-tag descriptions (used on /tags/<slug>/ pages instead of the generic
+# "Posts tagged X" line — keyed by tag slug, not display name)
+[extra.tag_descriptions]
+linux = "Practical notes on running Arch-based Linux distributions, from WiFi hotspot quirks to database setup."
+subresource-integrity = "How Subresource Integrity (SRI) hashes protect a site from tampered third-party scripts and stylesheets."
+garuda = "Setup notes for Garuda Linux, an Arch-based distribution built for performance."
+cors = "Notes on Cross-Origin Resource Sharing (CORS) and how browsers enforce cross-origin security policies."
+
 # 404 page
 notfound_status = "Status: Not Found"
 notfound_title = "Document Not Found"

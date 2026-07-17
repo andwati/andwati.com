@@ -1,11 +1,11 @@
 {% extends "base.html" %} {% block title %}Tag: {{ term.name }} | {{ config.title }}{% endblock
-title %} {% block description %}Posts tagged "{{ term.name }}" on {{ config.title }}{% endblock
+title %} {% block description %}{{ config.extra.tag_descriptions[term.slug] | default(value='Posts tagged "' ~ term.name ~ '" on ' ~ config.title) }}{% endblock
 description %} {% block canonical %}{{ term.permalink }}{% endblock canonical %} {% block og_title
-%}Tag: {{ term.name }} | {{ config.title }}{% endblock og_title %} {% block og_description %}Posts
-tagged "{{ term.name }}" on {{ config.title }}{% endblock og_description %} {% block og_url %}{{
+%}Tag: {{ term.name }} | {{ config.title }}{% endblock og_title %} {% block og_description %}{{
+config.extra.tag_descriptions[term.slug] | default(value='Posts tagged "' ~ term.name ~ '" on ' ~ config.title) }}{% endblock og_description %} {% block og_url %}{{
 term.permalink }}{% endblock og_url %} {% block head %}
 {% set tag_ld_name = 'Posts tagged "' ~ term.name ~ '" | ' ~ config.title %}
-{% set tag_ld_description = 'Posts tagged "' ~ term.name ~ '" on ' ~ config.title %}
+{% set tag_ld_description = config.extra.tag_descriptions[term.slug] | default(value='Posts tagged "' ~ term.name ~ '" on ' ~ config.title) %}
 <!-- SEO: Tag CollectionPage JSON-LD -->
 <script type="application/ld+json">
   {
@@ -51,6 +51,9 @@ term.permalink }}{% endblock og_url %} {% block head %}
 <div class="post-detail">
   <header class="post-header list-page-header">
     <h1 class="post-title list-page-title"><span class="term-hash">#</span>{{ term.name }}</h1>
+    {% if config.extra.tag_descriptions[term.slug] %}
+    <p class="tag-description">{{ config.extra.tag_descriptions[term.slug] }}</p>
+    {% endif %}
   </header>
 
   <div class="archive-list">

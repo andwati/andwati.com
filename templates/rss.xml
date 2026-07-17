@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="{{ get_url(path="rss.xsl", trailing_slash=false) }}"?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
     <channel>
       <title>{{ config.title }}</title>
       <link>{{ config.base_url }}</link>
@@ -16,7 +16,8 @@
           <author>{{ page.extra.author | default(value=config.extra.author) | default(value="Unknown") }}</author>
           <link>{{ page.permalink | safe }}</link>
           <guid>{{ page.permalink | safe }}</guid>
-          <description xml:base="{{ page.permalink | safe }}">{{ page.content }}</description>
+          <description xml:base="{{ page.permalink | safe }}">{{ page.description | default(value=config.description) }}</description>
+          <content:encoded>{{ page.content }}</content:encoded>
       </item>
       {% endfor %}
     </channel>
