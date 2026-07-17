@@ -1,0 +1,40 @@
+# andwati.com
+
+> Ian Andwati's personal blog about mathematics, computer science, binary exploitation, reverse engineering, capture-the-flag competitions, offensive security, Linux, and software development.
+
+This site contains articles in English, often with commands, code samples, worked explanations, and material aimed at readers learning by doing.
+
+## Main pages
+
+- [Home](https://andwati.com/): Introduction and latest articles.
+- [About](https://andwati.com/about/): About the author and contact information.
+- [Posts](https://andwati.com/posts/): All published articles.
+- [Tags](https://andwati.com/tags/): Articles grouped by topic.
+- [Archive](https://andwati.com/archive/): Chronological article archive.
+
+## Published articles
+
+- [The One Thing Nobody Tells You About WiFi Hotspots on Arch Linux](https://andwati.com/posts/wifi-hotspot-arch/): A minimal Arch install is great until NetworkManager silently fails to find a binary you didn't know you needed
+- [From C to Machine Code: What Actually Runs](https://andwati.com/posts/from-c-to-machine-code/): Before diving into how to break a program, we need to understand what the computer is actually executing
+- [The Single Byte That Kills Your Exploit: Understanding Endianness](https://andwati.com/posts/the-single-byte-that-kills-your-exploit-understanding-endianness/): Problem: Computers speak different languages, like people
+- [What is pwn?](https://andwati.com/posts/what-is-pwn/): No not that one
+- [ScriptCTF 2025 Writeup](https://andwati.com/posts/scriptctf2025/): ScriptCTF 2025 Writeup
+- [mmuctf 2025 writeup](https://andwati.com/posts/mmuctf2025/): mmuctf 2025 challenges writeup
+- [cognitive inertia](https://andwati.com/posts/inertia/): inertia
+- [Export default and module.exports in Javascript](https://andwati.com/posts/javascript-exporting-modules/): Modules are the building blocks of modern JavaScript applications, allowing for the encapsulation of code into reusable components. Two primary systems govern the exportation of these modules: export default in ES6 and module.exports in CommonJS.
+- [Setting up Obsidian sync in Windows](https://andwati.com/posts/obsidian-sync/): Syncing Obsidian in Windows with Windows Task Scheduler with git
+- [A Fresh Coat Of Paint](https://andwati.com/posts/a-fresh-coat-of-paint/): Migrating to Zola
+- [What say you?](https://andwati.com/posts/utterances-comments/): Adding a comment system by utterances
+- [Subresource Integrity](https://andwati.com/posts/subresource-integrity/): Understanding Subresource Integrity
+- [Install PostgreSQL  on Arch | Manjaro | Garuda Linux](https://andwati.com/posts/install-postgresql-15-on-arch-manjaro-garuda-linux/): Getting PostgreSQL up and running on Arch Linux-based distros
+- [Semantic Versioning(SemVer) and Conventional  Commits](https://andwati.com/posts/semantic-version-and-conventional-commits/): Adopting best practices in your git and build workflows.
+- [Integrating Netlify CMS](https://andwati.com/posts/integrating-netlify/): Integrating netlify cms
+- [Django Secret Key Tutorial](https://andwati.com/posts/generate-django-secret-key/): Managing secrets
+- [Hello World](https://andwati.com/posts/hello-world/): Hello world
+- [Configure Vue.js app With Tailwind CSS](https://andwati.com/posts/vuejs-tailwind/): Tailwindcss in vuejs
+
+## Feeds and discovery
+
+- [RSS feed](https://andwati.com/rss.xml): Full site feed in RSS format.
+- [JSON feed](https://andwati.com/feed.json): Full site feed in JSON format.
+- [Sitemap](https://andwati.com/sitemap.xml): Machine-readable index of public pages.

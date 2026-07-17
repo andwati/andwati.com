@@ -18,6 +18,8 @@ lazy_async_image = true
 theme = "gruvbox-dark-medium"
 
 [extra]
+llms_description = "Ian Andwati's personal blog about mathematics, computer science, binary exploitation, reverse engineering, capture-the-flag competitions, offensive security, Linux, and software development."
+
 # Analytics
 google_analytics = "G-4HGRQ9QNPD"
 google_site_verification = ""

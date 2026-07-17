@@ -5,6 +5,8 @@
     "wrangler": "^4"
   },
   "scripts": {
-    "deploy": "zola build && wrangler deploy"
+    "generate:llms": "node scripts/generate-llms.mjs",
+    "build": "npm run generate:llms && zola build",
+    "deploy": "npm run build && wrangler deploy"
   }
 }

@@ -48,19 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Sync cookieconsent dark mode reactively with the site theme
-  const syncCCTheme = () => {
-    const ccMain = document.getElementById('cc-main');
-    if (!ccMain) return;
-    ccMain.classList.toggle('cc--darkmode', htmlElement.classList.contains('dark'));
-  };
-  new MutationObserver(syncCCTheme).observe(htmlElement, {
-    attributes: true,
-    attributeFilter: ['class'],
-  });
-  // Initial sync in case banner is already mounted
-  setTimeout(syncCCTheme, 100);
-
   // Sync Utterances (comments iframe) theme with the site theme.
   // The iframe only reads its initial `theme` attribute once, so later
   // changes must go through postMessage per the utterances protocol.

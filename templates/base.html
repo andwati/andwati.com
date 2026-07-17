@@ -90,152 +90,15 @@
     </script>
 
     {% if config.extra.google_analytics %}
-    <!-- Google Analytics — loaded only after cookie consent -->
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config.extra.google_analytics }}"></script>
     <script>
-      // GA loader called by cookieconsent on consent
-      function loadGoogleAnalytics() {
-        if (window._gaLoaded) return;
-        window._gaLoaded = true;
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id={{ config.extra.google_analytics }}';
-        document.head.appendChild(s);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        window.gtag = gtag;
-        gtag('js', new Date());
-        gtag('config', '{{ config.extra.google_analytics }}', { anonymize_ip: true });
-      }
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ config.extra.google_analytics }}', { anonymize_ip: true });
     </script>
     {% endif %}
-
-    <!-- CookieConsent v3 (self-hosted) — CSS deferred, banner doesn't need to paint immediately -->
-    <link rel="preload" href="{{ get_url(path="css/cookieconsent.css") }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ get_url(path="css/cookieconsent.css") }}"></noscript>
-    <script defer src="{{ get_url(path="js/cookieconsent.umd.js") }}"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        if (typeof CookieConsent === 'undefined') return;
-
-        CookieConsent.run({
-          cookie: { name: 'cc_cookie' },
-
-          // Mirror the site's html.dark class — banner switches with the theme toggle
-          darkMode: ['class', 'dark'],
-
-          guiOptions: {
-            consentModal: {
-              layout: 'bar inline',
-              position: 'bottom',
-              flipButtons: false,
-              equalWeightButtons: false
-            },
-            preferencesModal: {
-              layout: 'box',
-              position: 'right'
-            }
-          },
-
-          onConsent: function() {
-            if (CookieConsent.acceptedCategory('analytics')) {
-              if (typeof loadGoogleAnalytics === 'function') loadGoogleAnalytics();
-            }
-          },
-          onChange: function() {
-            if (CookieConsent.acceptedCategory('analytics')) {
-              if (typeof loadGoogleAnalytics === 'function') loadGoogleAnalytics();
-            }
-          },
-
-          categories: {
-            necessary: { enabled: true, readOnly: true },
-            analytics: {
-              enabled: false,
-              readOnly: false,
-              autoClear: { cookies: [{ name: /^(_ga|_gid|_gat)/ }] }
-            }
-          },
-
-          language: {
-            default: 'en',
-            translations: {
-              en: {
-                consentModal: {
-                  title: 'We use cookies',
-                  description: 'This site uses Google Analytics to understand how visitors interact with content. No personal data is sold or shared.',
-                  acceptAllBtn: 'Accept',
-                  acceptNecessaryBtn: 'Reject',
-                  showPreferencesBtn: 'Manage preferences'
-                },
-                preferencesModal: {
-                  title: 'Cookie preferences',
-                  acceptAllBtn: 'Accept all',
-                  acceptNecessaryBtn: 'Reject all',
-                  savePreferencesBtn: 'Save preferences',
-                  closeIconLabel: 'Close',
-                  sections: [
-                    {
-                      title: 'Strictly necessary',
-                      description: 'Required for the site to function. Cannot be disabled.',
-                      linkedCategory: 'necessary'
-                    },
-                    {
-                      title: 'Analytics',
-                      description: 'Google Analytics — helps understand which content is most useful. No personal data sold.',
-                      linkedCategory: 'analytics'
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        });
-      });
-    </script>
-
-    <!-- CookieConsent: accent colors pulled from CSS custom properties -->
-    <style>
-      /* Light mode */
-      #cc-main {
-        --cc-btn-primary-bg: var(--accent-color);
-        --cc-btn-primary-color: #ffffff;
-        --cc-btn-primary-border-color: var(--accent-color);
-        --cc-btn-primary-hover-bg: var(--accent-hover);
-        --cc-btn-primary-hover-border-color: var(--accent-hover);
-        --cc-toggle-on-bg: var(--accent-color);
-        --cc-font-family: 'Source Serif 4', Georgia, serif;
-        --cc-btn-border-radius: 2px;
-        --cc-modal-border-radius: 2px;
-      }
-
-      /* Dark mode — synced with html.dark via darkMode: ['class', 'dark'] */
-      #cc-main.cc--darkmode {
-        --cc-bg: #1b1a17;
-        --cc-primary-color: #e9e7de;
-        --cc-secondary-color: #a5a49a;
-        --cc-btn-primary-bg: var(--accent-color);
-        --cc-btn-primary-color: #131311;
-        --cc-btn-primary-border-color: var(--accent-color);
-        --cc-btn-primary-hover-bg: var(--accent-hover);
-        --cc-btn-primary-hover-border-color: var(--accent-hover);
-        --cc-btn-secondary-bg: rgba(233,231,222,0.06);
-        --cc-btn-secondary-color: #a5a49a;
-        --cc-btn-secondary-border-color: rgba(233,231,222,0.1);
-        --cc-btn-secondary-hover-bg: rgba(233,231,222,0.12);
-        --cc-btn-secondary-hover-color: #e9e7de;
-        --cc-separator-border-color: rgba(233,231,222,0.1);
-        --cc-cookie-category-block-bg: rgba(233,231,222,0.04);
-        --cc-cookie-category-block-border: rgba(233,231,222,0.08);
-        --cc-toggle-on-bg: var(--accent-color);
-        --cc-footer-bg: #131311;
-        --cc-footer-border-color: rgba(233,231,222,0.08);
-      }
-
-      /* Accent top border, no default box-shadow */
-      #cc-main .cm,
-      #cc-main .pm { box-shadow: none !important; }
-      #cc-main .cm  { border-top: 2px solid var(--accent-color) !important; }
-    </style>
 
     {% block head %}{% endblock head %}
 

@@ -10,6 +10,7 @@ echo "Extracting Zola..."
 tar -xf zola-v${ZOLA_VERSION}-x86_64-unknown-linux-gnu.tar.gz
 
 echo "Building site with Zola..."
+node scripts/generate-llms.mjs
 ./zola build
 
 echo "Build complete! Generated files:"
