@@ -109,8 +109,9 @@
     </script>
     {% endif %}
 
-    <!-- CookieConsent v3 (self-hosted) -->
-    <link rel="stylesheet" href="{{ get_url(path="css/cookieconsent.css") }}">
+    <!-- CookieConsent v3 (self-hosted) — CSS deferred, banner doesn't need to paint immediately -->
+    <link rel="preload" href="{{ get_url(path="css/cookieconsent.css") }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ get_url(path="css/cookieconsent.css") }}"></noscript>
     <script defer src="{{ get_url(path="js/cookieconsent.umd.js") }}"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -211,14 +212,14 @@
       #cc-main.cc--darkmode {
         --cc-bg: #1b1a17;
         --cc-primary-color: #e9e7de;
-        --cc-secondary-color: #8b8a80;
+        --cc-secondary-color: #a5a49a;
         --cc-btn-primary-bg: var(--accent-color);
-        --cc-btn-primary-color: #ffffff;
+        --cc-btn-primary-color: #131311;
         --cc-btn-primary-border-color: var(--accent-color);
         --cc-btn-primary-hover-bg: var(--accent-hover);
         --cc-btn-primary-hover-border-color: var(--accent-hover);
         --cc-btn-secondary-bg: rgba(233,231,222,0.06);
-        --cc-btn-secondary-color: #8b8a80;
+        --cc-btn-secondary-color: #a5a49a;
         --cc-btn-secondary-border-color: rgba(233,231,222,0.1);
         --cc-btn-secondary-hover-bg: rgba(233,231,222,0.12);
         --cc-btn-secondary-hover-color: #e9e7de;
