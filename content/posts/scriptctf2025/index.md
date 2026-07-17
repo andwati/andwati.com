@@ -7,14 +7,14 @@ date = 2025-08-18
 tags = ["ctf", "rev", "web", "forensics"]
 +++
 
-![][image1]  
+![ScriptCTF mascot illustration of a wizard coding at a laptop, with the tagline "scriptCTF makes CTFs fun and approachable for all skill levels!"][image1]  
 Over the weekend, I participated in ScriptCTF, a capture-the-flag competition packed with diverse challenges spanning cryptography, forensics, reverse engineering, and web exploitation.
 
 In this write-up, I’ll walk through some of the problems I solved, breaking down my approach, the tools I used, and the reasoning behind each step. Rather than just dropping final answers, my goal is to document the problem-solving process in a way that’s reproducible and useful for others looking to sharpen their cybersecurity skills.
 
 # Challenge: Renderer
 
-![][image2]
+![ScriptCTF challenge card for "Renderer" describing the free image-rendering app and its chall.zip attachment][image2]
 
 This is the first web challenge; it launches an instance, and the source code is provided for manual code review. There are three important files: two Jinja templates and a Python file.
 
@@ -170,7 +170,7 @@ Here is an innocent-looking SVG
 ```
 
 And…  
-![][image3]  
+![Browser alert dialog reading "You are not a developer!" from the failed cookie-theft attempt][image3]  
 I didn't think that through. I can't make that request without the cookie. Another approach I tried was Local File Inclusion(LFI) using the SVG. Here is another not-so-evil one:
 
 ```svg
@@ -192,7 +192,7 @@ Flag: `scriptCTF{my_c00k135_4r3_n0t_s4f3!_601871f7aad5}`
 
 # Challenge: Div
 
-![][image4]  
+![ScriptCTF challenge card for "Div" with its chall.py attachment and an instance launcher][image4]  
 Here are the contents of the [chall.py](http://chall.py)
 
 ```python
@@ -303,7 +303,7 @@ Infinity represents a number so large that any finite numerator divided by it te
 
 # Challenge: Emoji
 
-![][image5]  
+![ScriptCTF challenge card for "emoji" describing the challenge and its out.txt attachment][image5]  
 Out.txt has some symbols.
 
 ```txt
@@ -332,13 +332,13 @@ Flag : `scriptCTF{3m0j1_3nc0d1ng_1s_w31rd_4nd_fun!1e46d}`
 
 # Challenge: Enchant
 
-![][image6]  
+![ScriptCTF challenge card for "Enchant" describing the Minecraft enchantment-table glyphs and its enc.txt attachment][image6]  
 After some Google search, I found out that’s the Standard Galactic Alphabet, the glyphs used by Minecraft’s enchantment table. The enchantment-table glyphs map one-to-one to letters in the Standard Galactic Alphabet (SGA). I used the SGA ↔ Latin mapping to translate each symbol into its English letter at [https://www.dcode.fr/standard-galactic-alphabet](https://www.dcode.fr/standard-galactic-alphabet). The result is MINECRAFTISFUN.
 
 Flag: `scriptCTF{MINECRAFTISFUN}`
 
 Challenge: diskchal  
-![][image7]  
+![ScriptCTF challenge card for "diskchal" describing the vanished flag and its stick.img attachment][image7]  
 This was a forensics challenge; we were given a disk image, probably to recover some files, as the challenge description suggests.
 
 ```zsh
@@ -419,9 +419,9 @@ Flag: scriptCTF{1_l0v3_m461c_7r1ck5}
 
 # Challenge: pdf
 
-![][image8]  
+![ScriptCTF challenge card for "pdf" describing the challenge and its challenge.pdf attachment][image8]  
 Opening the PDF was just a trol  
-![][image9]  
+![The challenge PDF's actual content: a mostly blank page reading "thx for comming but no flag here :)"][image9]  
 Running strings on it made me think I had a quick win.
 
 ```zsh
@@ -466,7 +466,7 @@ Flag: `scriptCTF{pdf_s7r34m5_0v3r_7w17ch_5tr34ms}`
 
 # Challenge: Just Some Avocado
 
-![][image10]
+![ScriptCTF challenge card for "Just Some Avocado" with its avocado.jpg attachment][image10]
 
 This is another forensics challenge; we are given a JPEG file with an image of an avocado. Preliminary investigations reveal some interesting objects.
 
@@ -589,11 +589,11 @@ Duration                        : 4.96 s
 ```
 
 I opened the file in Sonic Visualizer and applied a spectrogram view. Here is what shows  
-![][image11]
+![Sonic Visualizer spectrogram of staticnoise.wav showing partially clipped hidden text resembling "d41"][image11]
 
 It looks like some embedded text, but it's clipped. I redid the same process in Audacity, and this is what it shows.
 
-![][image12]
+![Audacity spectrogram of staticnoise.wav showing more legible hidden text beginning with "d41v3"][image12]
 
 I can make out the first three characters, d41, and the fifth `3`. We can use John's mask mode to generate the possible combinations.
 
@@ -631,7 +631,7 @@ Flag: `scriptCTF{1_l0ve_d41_v3r0n}`
 
 # Challenge: RSA-1
 
-![][image13]
+![ScriptCTF challenge card for "RSA-1" describing the broadcast attack scenario and its out.txt attachment][image13]
 
 The attachment out.txt has
 
@@ -716,7 +716,7 @@ Flag: `scriptCTF{y0u_f0und_mr_yu's_s3cr3t_m3g_12a4e4}`
 
 # Challenge: Secure-Server
 
-![][image14]
+![ScriptCTF challenge card for "Secure-Server" describing the double-XOR scheme and its files.zip attachment][image14]
 
 The provided files are a network capture(pcap) and a Python file. The contents of the Python file are
 
@@ -735,7 +735,7 @@ print("Secret received!")
 
 Opening the pcap file in Wireshark, we get some TCP streams that we follow and see.
 
-![][image15]
+![Wireshark packet capture with a Follow TCP Stream window showing the encrypted secret exchange][image15]
 
 To decrypt it
 

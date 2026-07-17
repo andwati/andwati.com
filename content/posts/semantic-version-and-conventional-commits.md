@@ -31,8 +31,6 @@ Semantic versioning is based on three numbers that indicate the versions of the 
 
 #### React(v18.2.0)
 
-![react](/images/uploads/react.png 'React versioning')
-
 - **Major -> 18**
 - **Minor -> 2**
 - **Patch -> 0**
@@ -40,8 +38,6 @@ Semantic versioning is based on three numbers that indicate the versions of the 
 ---
 
 #### Pipx(v1.1.0)
-
-![](/images/uploads/pipx.png)
 
 - **Major -> 1**
 - **Minor -> 1**
