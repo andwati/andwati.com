@@ -5,7 +5,7 @@ description %} {% block canonical %}{{ term.permalink }}{% endblock canonical %}
 config.extra.tag_descriptions[term.slug] | default(value='Posts tagged "' ~ term.name ~ '" on ' ~ config.title) }}{% endblock og_description %} {% block og_url %}{{
 term.permalink }}{% endblock og_url %} {% block head %}
 {% set tag_ld_name = 'Posts tagged "' ~ term.name ~ '" | ' ~ config.title %}
-{% set tag_ld_description = config.extra.tag_descriptions[term.slug] | default(value='Posts tagged "' ~ term.name ~ '" on ' ~ config.title) %}
+{% set tag_ld_fallback_description = 'Posts tagged "' ~ term.name ~ '" on ' ~ config.title %}
 <!-- SEO: Tag CollectionPage JSON-LD -->
 <script type="application/ld+json">
   {
@@ -13,7 +13,7 @@ term.permalink }}{% endblock og_url %} {% block head %}
     "@type": "CollectionPage",
     "@id": "{{ term.permalink | safe }}#collection",
     "name": {{ tag_ld_name | json_encode | safe }},
-    "description": {{ tag_ld_description | json_encode | safe }},
+    "description": {% if config.extra.tag_descriptions[term.slug] %}{{ config.extra.tag_descriptions[term.slug] | json_encode | safe }}{% else %}{{ tag_ld_fallback_description | json_encode | safe }}{% endif %},
     "url": "{{ term.permalink | safe }}",
     "inLanguage": "en-US",
     "isPartOf": {
@@ -26,9 +26,14 @@ term.permalink }}{% endblock og_url %} {% block head %}
         "@type": "BlogPosting",
         "@id": "{{ page.permalink | safe }}#article",
         "headline": {{ page.title | json_encode | safe }},
-        "image": "{{ config.base_url | safe }}{{ page.extra.image | default(value="/images/og-image.png") | safe }}",
-        "url": "{{ page.permalink | safe }}"
+        "image": "{{ config.base_url | safe }}{% if page.extra.image %}{{ page.extra.image | safe }}{% else %}/images/og-image.png{% endif %}",
+        "url": "{{ page.permalink | safe }}",
+        "author": {
+          "@type": "Person",
+          "@id": "{{ config.base_url | safe }}/#author"
+        }
         {% if page.date %},"datePublished": "{{ page.date | date(format="%+") }}"{% endif %}
+        {% if page.updated %},"dateModified": "{{ page.updated | date(format="%+") }}"{% elif page.date %},"dateModified": "{{ page.date | date(format="%+") }}"{% endif %}
       }{% if not loop.last %},{% endif %}
       {% endfor %}
     ]

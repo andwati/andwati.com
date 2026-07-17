@@ -14,7 +14,7 @@
   {% if page.ancestors is containing("posts/_index.md") %}
   {% if page.date %}<meta property="article:published_time" content="{{ page.date | date(format="%+") }}">{% endif %}
   {% if page.updated %}<meta property="article:modified_time" content="{{ page.updated | date(format="%+") }}">{% endif %}
-  <meta property="article:author" content="{{ config.extra.author | default(value="andwati") }}">
+  <meta property="article:author" content="{{ config.extra.author }}">
   {% if page.taxonomies.tags %}
     {% for tag in page.taxonomies.tags %}
     <meta property="article:tag" content="{{ tag }}">
@@ -41,8 +41,8 @@
       "@id": "{{ page.permalink | safe }}"
     },
     "headline": {{ page.title | json_encode | safe }},
-    "description": {{ page.description | default(value=config.description) | json_encode | safe }},
-    "image": "{{ config.base_url | safe }}{{ page.extra.image | default(value="/images/og-image.png") | safe }}",
+    "description": {% if page.description %}{{ page.description | json_encode | safe }}{% else %}{{ config.description | json_encode | safe }}{% endif %},
+    "image": "{{ config.base_url | safe }}{% if page.extra.image %}{{ page.extra.image | safe }}{% else %}/images/og-image.png{% endif %}",
     "url": "{{ page.permalink | safe }}",
     "inLanguage": "en-US",
     {% if page.date %}"datePublished": "{{ page.date | date(format="%+") }}",{% endif %}
@@ -50,13 +50,13 @@
     "author": {
       "@type": "Person",
       "@id": "{{ config.base_url | safe }}/#author",
-      "name": {{ config.extra.author | default(value="andwati") | json_encode | safe }},
+      "name": {{ config.extra.author | json_encode | safe }},
       "url": "{{ config.base_url | safe }}/about/"
     },
     "publisher": {
       "@type": "Person",
       "@id": "{{ config.base_url | safe }}/#author",
-      "name": {{ config.extra.author | default(value="andwati") | json_encode | safe }},
+      "name": {{ config.extra.author | json_encode | safe }},
       "url": "{{ config.base_url | safe }}/about/"
     },
     "isPartOf": {
@@ -91,7 +91,7 @@
     "@type": "WebPage",
     "@id": "{{ page.permalink | safe }}",
     "name": {{ page.title | json_encode | safe }},
-    "description": {{ page.description | default(value=config.description) | json_encode | safe }},
+    "description": {% if page.description %}{{ page.description | json_encode | safe }}{% else %}{{ config.description | json_encode | safe }}{% endif %},
     "url": "{{ page.permalink | safe }}",
     "inLanguage": "en-US",
     "isPartOf": {

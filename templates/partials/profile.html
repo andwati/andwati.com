@@ -1,6 +1,6 @@
 {% if config.extra.show_profile %}
 <div class="masthead">
-  <p class="masthead-kicker">{{ config.extra.author | default(value="andwati") }}{% if config.extra.profile_subtitle %} — {{ config.extra.profile_subtitle }}{% endif %}</p>
+  <p class="masthead-kicker">{{ config.extra.author }}{% if config.extra.profile_subtitle %} — {{ config.extra.profile_subtitle }}{% endif %}</p>
   <h1 class="hero-title masthead-title">{{ config.title }}</h1>
   <p class="hero-subtitle">{{ config.description }}</p>
 

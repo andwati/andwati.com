@@ -30,9 +30,14 @@ og_description %}{{ config.extra.posts_page_subtitle | default(value="Exploring 
         "@type": "BlogPosting",
         "@id": "{{ page.permalink | safe }}#article",
         "headline": {{ page.title | json_encode | safe }},
-        "image": "{{ config.base_url | safe }}{{ page.extra.image | default(value="/images/og-image.png") | safe }}",
-        "url": "{{ page.permalink | safe }}"
+        "image": "{{ config.base_url | safe }}{% if page.extra.image %}{{ page.extra.image | safe }}{% else %}/images/og-image.png{% endif %}",
+        "url": "{{ page.permalink | safe }}",
+        "author": {
+          "@type": "Person",
+          "@id": "{{ config.base_url | safe }}/#author"
+        }
         {% if page.date %},"datePublished": "{{ page.date | date(format="%+") }}"{% endif %}
+        {% if page.updated %},"dateModified": "{{ page.updated | date(format="%+") }}"{% elif page.date %},"dateModified": "{{ page.date | date(format="%+") }}"{% endif %}
       }{% if not loop.last %},{% endif %}
       {% endfor %}
     ]

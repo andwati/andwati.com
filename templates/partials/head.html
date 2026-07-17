@@ -64,7 +64,7 @@
     {
       "@type": "Person",
       "@id": "{{ config.base_url | safe }}/#author",
-      "name": {{ config.extra.author | default(value="andwati") | json_encode | safe }},
+      "name": {{ config.extra.author | json_encode | safe }},
       "url": "{{ config.base_url | safe }}/about/",
       "sameAs": [
         {% if config.extra.github_url %}"{{ config.extra.github_url | safe }}"{% if config.extra.twitter_url or config.extra.youtube_url %},{% endif %}{% endif %}
