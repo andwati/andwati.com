@@ -15,6 +15,10 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="#131311">
 
+    {% if config.extra.google_site_verification %}
+    <meta name="google-site-verification" content="{{ config.extra.google_site_verification }}">
+    {% endif %}
+
     <!-- Canonical URL -->
     <link rel="canonical" href="{% block canonical %}{{ config.base_url }}/{% endblock canonical %}">
 

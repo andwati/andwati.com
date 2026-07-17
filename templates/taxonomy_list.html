@@ -17,6 +17,18 @@ og_description %} {% block og_url %}{{ config.base_url }}/tags/{% endblock og_ur
     "inLanguage": "en-US"
   }
 </script>
+
+<!-- SEO: BreadcrumbList JSON-LD -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ config.base_url | safe }}/" },
+      { "@type": "ListItem", "position": 2, "name": "Tags", "item": "{{ config.base_url | safe }}/tags/" }
+    ]
+  }
+</script>
 {% endblock head %} {% block content %}
 <div class="tags-page">
   <header class="page-header tags-page-header">

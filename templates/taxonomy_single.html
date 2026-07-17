@@ -26,11 +26,24 @@ term.permalink }}{% endblock og_url %} {% block head %}
         "@type": "BlogPosting",
         "@id": "{{ page.permalink | safe }}#article",
         "headline": {{ page.title | json_encode | safe }},
-        "image": "{{ config.base_url | safe }}/images/og-image.png",
+        "image": "{{ config.base_url | safe }}{{ page.extra.image | default(value="/images/og-image.png") | safe }}",
         "url": "{{ page.permalink | safe }}"
         {% if page.date %},"datePublished": "{{ page.date | date(format="%+") }}"{% endif %}
       }{% if not loop.last %},{% endif %}
       {% endfor %}
+    ]
+  }
+</script>
+
+<!-- SEO: BreadcrumbList JSON-LD -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ config.base_url | safe }}/" },
+      { "@type": "ListItem", "position": 2, "name": "Tags", "item": "{{ config.base_url | safe }}/tags/" },
+      { "@type": "ListItem", "position": 3, "name": {{ term.name | json_encode | safe }}, "item": "{{ term.permalink | safe }}" }
     ]
   }
 </script>
