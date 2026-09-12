@@ -1,0 +1,21 @@
+---
+/**
+ * Self-hosted Umami analytics. No-ops until PUBLIC_UMAMI_SCRIPT_URL and
+ * PUBLIC_UMAMI_WEBSITE_ID are set (see .env.example) — fill those in once
+ * the Umami instance is deployed, no code changes needed.
+ */
+const scriptUrl = import.meta.env.PUBLIC_UMAMI_SCRIPT_URL;
+const websiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
+const domains = import.meta.env.PUBLIC_UMAMI_DOMAINS;
+---
+
+{
+  scriptUrl && websiteId && (
+    <script
+      defer
+      src={scriptUrl}
+      data-website-id={websiteId}
+      data-domains={domains || undefined}
+    />
+  )
+}

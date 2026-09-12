@@ -1,0 +1,207 @@
+---
+import "katex/dist/katex.min.css";
+import { getCollection, render } from "astro:content";
+import TocList from "../../components/TocList.astro";
+import Minimap from "../../components/Minimap.astro";
+import ReadingProgress from "../../components/ReadingProgress.astro";
+import ShareButtons from "../../components/ShareButtons.astro";
+import Comments from "../../components/Comments.astro";
+import Base from "../../layouts/Base.astro";
+import { siteConfig } from "../../site.config";
+
+export async function getStaticPaths() {
+  const writings = await getCollection("writings", ({ data }) => !data.draft);
+  return writings.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const allWritings = (
+  await getCollection("writings", ({ data }) => !data.draft)
+).sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const index = allWritings.findIndex((w) => w.id === entry.id);
+const prev = index > 0 ? allWritings[index - 1] : undefined;
+const next =
+  index < allWritings.length - 1 ? allWritings[index + 1] : undefined;
+
+const series = entry.data.extra?.series;
+const seriesEntries = series
+  ? allWritings
+      .filter((w) => w.data.extra?.series === series)
+      .sort(
+        (a, b) =>
+          (a.data.extra?.series_index ?? 0) - (b.data.extra?.series_index ?? 0),
+      )
+  : [];
+
+const tags = entry.data.taxonomies?.tags ?? [];
+const shareUrl = new URL(Astro.url.pathname, siteConfig.baseUrl).href;
+const canonicalUrl = entry.data.canonical_url ?? shareUrl;
+const ogImageUrl = new URL(`/images/og/writings/${entry.id}.png`, siteConfig.baseUrl).href;
+
+const description =
+  entry.data.extra?.llms_description ?? entry.data.description;
+const tocHeadings = headings.filter((h) => h.depth <= 3);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: entry.data.title,
+  description,
+  url: canonicalUrl,
+  image: ogImageUrl,
+  datePublished: entry.data.date.toISOString(),
+  dateModified: (entry.data.updated ?? entry.data.date).toISOString(),
+  keywords: tags.length ? tags.join(", ") : undefined,
+  author: { "@id": `${siteConfig.baseUrl}/#person` },
+  publisher: { "@id": `${siteConfig.baseUrl}/#person` },
+  mainEntityOfPage: canonicalUrl,
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.baseUrl },
+    { "@type": "ListItem", position: 2, name: "Writings", item: `${siteConfig.baseUrl}/writings/` },
+    { "@type": "ListItem", position: 3, name: entry.data.title, item: canonicalUrl },
+  ],
+};
+
+const videoJsonLd = entry.data.youtubeIds.map((id) => ({
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  name: entry.data.title,
+  description,
+  thumbnailUrl: `https://i.ytimg.com/vi/${id}/sddefault.jpg`,
+  uploadDate: entry.data.date.toISOString(),
+  embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,
+  contentUrl: `https://www.youtube.com/watch?v=${id}`,
+}));
+---
+
+<Base
+  title={entry.data.title}
+  description={description}
+  wide
+  ogImage={`/images/og/writings/${entry.id}.png`}
+  ogType="article"
+  canonicalUrl={canonicalUrl}
+  structuredData={[articleJsonLd, breadcrumbJsonLd, ...videoJsonLd]}
+>
+  <ReadingProgress />
+  <div class="article-layout">
+    <div class="article-main">
+      <h1>{entry.data.title}</h1>
+      <p class="meta">
+        {entry.data.date.toDateString()}
+        {entry.data.readingMinutes && <> · {entry.data.readingMinutes} min read</>}
+        {entry.data.updated && <> · updated {entry.data.updated.toDateString()}</>}
+      </p>
+      {tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>#{tag}</a>)}
+
+      {
+        series && (
+          <nav class="series-nav" aria-label={`Post series: ${series}`}>
+            <p class="meta">
+              Series: {series} ({(entry.data.extra?.series_index ?? 0)} / {seriesEntries.length})
+            </p>
+            <ol>
+              {seriesEntries.map((w) => (
+                <li aria-current={w.id === entry.id ? "page" : undefined}>
+                  <a href={`/writings/${w.id}/`}>{w.data.title}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+
+      {
+        tocHeadings.length > 0 && (
+          <nav class="toc toc-inline" aria-label="Table of contents">
+            <TocList headings={tocHeadings} />
+          </nav>
+        )
+      }
+
+      <article>
+        <Content />
+      </article>
+
+      <ShareButtons title={entry.data.title} url={shareUrl} />
+
+      {
+        (prev || next) && (
+          <nav class="post-nav" aria-label="Post navigation">
+            {prev && (
+              <a class="post-nav-link post-nav-prev" href={`/writings/${prev.id}/`}>
+                <span class="post-nav-label">← Previous</span>
+                <span class="post-nav-title">{prev.data.title}</span>
+              </a>
+            )}
+            {next && (
+              <a class="post-nav-link post-nav-next" href={`/writings/${next.id}/`}>
+                <span class="post-nav-label">Next →</span>
+                <span class="post-nav-title">{next.data.title}</span>
+              </a>
+            )}
+          </nav>
+        )
+      }
+
+      <Comments />
+    </div>
+
+    {
+      tocHeadings.length > 0 && (
+        <nav class="toc toc-sidebar" aria-label="Table of contents">
+          <TocList headings={tocHeadings} />
+        </nav>
+      )
+    }
+  </div>
+
+  <Minimap />
+</Base>
+
+<style>
+  .article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 42rem);
+    justify-content: start;
+    align-items: start;
+    gap: var(--space-7);
+  }
+
+  .toc-sidebar {
+    display: none;
+  }
+
+  @media (min-width: 74rem) {
+    .article-layout {
+      grid-template-columns: 16rem minmax(0, 42rem);
+    }
+
+    .article-main {
+      order: 2;
+    }
+
+    .toc-inline {
+      display: none;
+    }
+
+    .toc-sidebar {
+      display: block;
+      order: 1;
+      position: sticky;
+      top: var(--space-6);
+      max-height: calc(100vh - var(--space-7));
+      overflow-y: auto;
+    }
+  }
+</style>

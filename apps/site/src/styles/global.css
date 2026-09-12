@@ -1,0 +1,456 @@
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: 1.65;
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+
+::selection {
+  background: var(--accent-muted);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-4);
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.08em;
+  text-decoration-skip-ink: auto;
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+  display: inline-block;
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+}
+
+/* A plain <a> has its own default underline (in its own text color, not
+   the heading's accent), which paints over the heading's underline and
+   made link-wrapped titles inconsistent with plain-text ones (and with
+   each other, depending on visited/hover state). Forcing the decoration to
+   inherit the heading's actual values fixes that everywhere a title is
+   wrapped in a link, without needing a class on every call site. */
+h1 a,
+h2 a,
+h3 a {
+  text-decoration-line: inherit;
+  text-decoration-color: inherit;
+  text-decoration-thickness: inherit;
+  text-underline-offset: inherit;
+  text-decoration-skip-ink: inherit;
+}
+
+p {
+  margin: 0 0 var(--space-5);
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+pre {
+  padding: var(--space-4);
+  overflow-x: auto;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.youtube-wrapper {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin: 0 0 var(--space-5);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.youtube-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* highlight.js syntax highlighting (toml-content-loader.ts renders code
+   fences through hljs's core build). Colors are drawn from the existing
+   design tokens, so they already switch with the site's light/dark theme
+   without any extra [data-theme] rules here — see tokens.css. */
+.hljs-comment,
+.hljs-quote {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-type,
+.hljs-literal,
+.hljs-link {
+  color: var(--accent);
+}
+
+/* #4a9c6d / #d1a53d have plenty of contrast on the dark theme's code-block
+   background but fail WCAG AA on the light one (2.8:1 / 1.9:1) — same issue
+   as the callout colors above, fixed the same way: darker variants for
+   light mode, originals restored for dark mode. */
+.hljs-string,
+.hljs-attr,
+.hljs-symbol,
+.hljs-addition {
+  color: #377451;
+}
+
+.hljs-number,
+.hljs-meta,
+.hljs-doctag {
+  color: #82641f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hljs-string,
+  :root:not([data-theme="light"]) .hljs-attr,
+  :root:not([data-theme="light"]) .hljs-symbol,
+  :root:not([data-theme="light"]) .hljs-addition {
+    color: #4a9c6d;
+  }
+  :root:not([data-theme="light"]) .hljs-number,
+  :root:not([data-theme="light"]) .hljs-meta,
+  :root:not([data-theme="light"]) .hljs-doctag {
+    color: #d1a53d;
+  }
+}
+
+:root[data-theme="dark"] .hljs-string,
+:root[data-theme="dark"] .hljs-attr,
+:root[data-theme="dark"] .hljs-symbol,
+:root[data-theme="dark"] .hljs-addition {
+  color: #4a9c6d;
+}
+
+:root[data-theme="dark"] .hljs-number,
+:root[data-theme="dark"] .hljs-meta,
+:root[data-theme="dark"] .hljs-doctag {
+  color: #d1a53d;
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_,
+.hljs-name {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.hljs-deletion {
+  color: var(--accent);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
+.container {
+  max-width: 42rem;
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+.container--wide {
+  max-width: 76rem;
+}
+
+.toc {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-5);
+}
+
+.toc p.meta {
+  margin-bottom: var(--space-2);
+}
+
+.toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.toc a {
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+.toc a:hover {
+  color: var(--accent);
+}
+
+.toc-sidebar {
+  padding-top: var(--space-1);
+  border-right: 1px solid var(--border);
+  padding-right: var(--space-4);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-muted);
+  margin: 0 0 var(--space-5);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin-right: var(--space-3);
+  text-decoration: none;
+}
+
+.tag:hover {
+  color: var(--accent);
+}
+
+.card {
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Semantically these list-item titles are h2 (the page's only other
+   heading is its own h1, with nothing at h2 between them) — sized down to
+   what used to be the h3 scale so going from h3 to h2 doesn't change the
+   visual hierarchy, just the accessibility tree. */
+.entry-title {
+  margin-bottom: var(--space-1);
+  font-size: var(--font-size-xl);
+}
+
+.entry-title a {
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.08em;
+  text-decoration-skip-ink: auto;
+}
+
+.entry-title a:hover {
+  color: var(--accent);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  transition:
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out);
+}
+
+.button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.callout {
+  margin: 0 0 var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--callout-color, var(--accent));
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+}
+
+.callout-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  color: var(--callout-color, var(--accent));
+}
+
+.callout-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+}
+
+.callout-title {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.callout-content {
+  color: var(--text);
+}
+
+.callout-content > :last-child {
+  margin-bottom: 0;
+}
+
+.callout-note {
+  --callout-color: var(--accent);
+}
+
+/* Dark-mode-only values: #4a9c6d and #d1a53d have plenty of contrast on the
+   dark --bg-elevated (5.4:1 / 7.9:1) but fail WCAG AA on the light one
+   (2.8:1 / 1.9:1), so light mode gets darkened variants instead of one
+   hardcoded color for both themes. */
+.callout-tip {
+  --callout-color: #377451;
+}
+
+.callout-warning {
+  --callout-color: #82641f;
+}
+
+.callout-danger {
+  --callout-color: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .callout-tip {
+    --callout-color: #4a9c6d;
+  }
+  :root:not([data-theme="light"]) .callout-warning {
+    --callout-color: #d1a53d;
+  }
+}
+
+:root[data-theme="dark"] .callout-tip {
+  --callout-color: #4a9c6d;
+}
+
+:root[data-theme="dark"] .callout-warning {
+  --callout-color: #d1a53d;
+}
+
+.post-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+
+.post-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-decoration: none;
+}
+
+.post-nav-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--accent);
+}
+
+.post-nav-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--text);
+  transition: color 0.2s var(--ease-out);
+}
+
+.post-nav-link:hover .post-nav-title {
+  color: var(--accent);
+}
+
+@media (min-width: 40rem) {
+  .post-nav {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .post-nav-next {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

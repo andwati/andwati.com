@@ -1,0 +1,105 @@
+---
+---
+
+<button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top" type="button">
+  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</button>
+
+<style>
+  .scroll-to-top {
+    position: fixed;
+    bottom: var(--space-6);
+    right: var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    cursor: pointer;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.75rem);
+    transition:
+      transform 0.25s var(--ease-out),
+      opacity 0.25s var(--ease-out),
+      visibility 0.25s var(--ease-out),
+      background-color 0.2s var(--ease-out),
+      color 0.2s var(--ease-out);
+  }
+
+  .scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  @media (hover: hover) {
+    .scroll-to-top:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+  }
+
+  .scroll-to-top:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 40rem) {
+    .scroll-to-top {
+      bottom: var(--space-5);
+      right: var(--space-5);
+    }
+  }
+</style>
+
+<script>
+  function initScrollToTop(signal: AbortSignal) {
+    const btn = document.getElementById("scroll-to-top");
+    if (!(btn instanceof HTMLElement)) return;
+
+    const toggleVisibility = () => {
+      btn.classList.toggle("visible", window.scrollY > 400);
+    };
+
+    btn.addEventListener(
+      "click",
+      () => window.scrollTo({ top: 0, behavior: "smooth" }),
+      { signal },
+    );
+
+    let ticking = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          toggleVisibility();
+          ticking = false;
+        });
+      },
+      { signal },
+    );
+
+    toggleVisibility();
+  }
+
+  // astro:page-load fires on first load and after every client-side
+  // navigation. Each firing gets a fresh AbortController so the previous
+  // page's window-level scroll listener is torn down first, instead of
+  // accumulating across navigations.
+  let controller: AbortController | undefined;
+  document.addEventListener("astro:page-load", () => {
+    controller?.abort();
+    controller = new AbortController();
+    initScrollToTop(controller.signal);
+  });
+</script>

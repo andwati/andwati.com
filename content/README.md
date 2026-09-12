@@ -1,0 +1,118 @@
+# content/
+
+This directory is the canonical source of truth for all site content. It is
+shared between `apps/site` (Astro reads it directly at build time) and
+`apps/cms` (Strapi's custom provider reads/writes these same files — its
+SQLite database is only a disposable cache/index, never the source of
+record). The site must always be buildable straight from this directory with
+Strapi entirely absent.
+
+Frontmatter is TOML (`+++ ... +++`), matching the legacy Zola posts under
+`content/posts/` to ease migration. Each content type below is one file (or a
+directory with `index.md` for entries with co-located assets), one frontmatter
+schema.
+
+## `writings/` (blog / essays)
+
+```toml
++++
+title = "..."
+description = "..."
+author = "andwati"
+date = 2026-04-08
+updated = 2026-04-10       # optional, only when the post has been revised
+draft = false
+canonical_url = ""         # optional, only if first published elsewhere
+[taxonomies]
+tags = ["..."]
+[extra]
+series = "..."             # optional
+series_index = 1           # required if `series` is set
+llms_description = "..."   # optional per-post override of the site-wide one
++++
+```
+
+## `portfolio/` (projects / professional work)
+
+```toml
++++
+title = "..."
+description = "..."
+role = "..."
+date_start = 2025-01-01
+date_end = 2025-06-01      # optional, omit if ongoing
+outcome = "one-line result"
+draft = false
+[[links]]
+label = "Live"
+url = "https://..."
+[[links]]
+label = "Source"
+url = "https://..."
+[taxonomies]
+tags = ["..."]             # stack / tech tags
++++
+```
+
+Body is a free-form Markdown case study.
+
+## `bookshelf/` (books *and* papers)
+
+`kind` selects which identifier fields apply — books use `isbn`, papers use
+`doi`/`arxiv_id`. Book covers are fetched from Open Library by ISBN and
+cached into `apps/site/public/covers/` (served at `/covers/...`), never
+fetched at page-render time. Papers have no reliable cover source, so
+`cover_image` is set manually for them, if at all; Semantic Scholar is only
+used to backfill a missing title/authors by DOI/arXiv id.
+
+Note: the field is named `read_status`, not `status` — Strapi's
+content-manager API treats a top-level `status` key as its own reserved
+draft/publish parameter even with `draftAndPublish` disabled, so an
+attribute literally named `status` silently breaks writes. Don't rename it
+back.
+
+```toml
++++
+title = "..."
+kind = "book"               # "book" | "paper"
+authors = ["..."]
+isbn = "9780000000000"      # books only
+doi = "10.1000/xyz123"      # papers only
+arxiv_id = "2101.00001"     # papers only, optional
+url = "https://..."         # papers only: landing page / source link
+cover_image = "/covers/slug.jpg"
+rating = 5                  # optional, 1-5
+read_status = "read"        # "reading" | "read" | "abandoned"
+date_started = 2026-01-01
+date_finished = 2026-01-20  # optional, omit if still in progress
+[taxonomies]
+tags = ["..."]              # genre / topic
++++
+```
+
+Body is a free-form personal review/notes.
+
+## `blogs/` (curated external blogs)
+
+```toml
++++
+title = "..."     # the blog/site's name
+url = "https://..."
+feed_url = "https://.../rss.xml"
++++
+```
+
+Body is a one-to-two sentence blurb on why you follow it. No live feed
+fetching — this list is hand-curated and static.
+
+## Markdown extras (all body content)
+
+- **LaTeX**: `$inline$` and `$$block$$` math renders to static HTML/MathML
+  at build time (`marked-katex-extension` in `toml-content-loader.ts`) — no
+  client-side JS shipped for it.
+- **Callouts**: `{% <note> %} ... {% </note> %}` (also `tip`/`warning`/
+  `danger`) renders as a styled callout box.
+- **YouTube embeds**: paste a plain `<iframe src="https://www.youtube-
+  nocookie.com/embed/VIDEO_ID" ...></iframe>` — it's automatically wrapped
+  in a responsive 16:9 container, gets `loading="lazy"`, and emits
+  `VideoObject` structured data. No shortcode needed.

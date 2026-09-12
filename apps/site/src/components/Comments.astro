@@ -1,0 +1,84 @@
+---
+const repo = "andwati/andwati.com";
+const themeDark = "gruvbox-dark";
+const themeLight = "github-light";
+---
+
+<div
+  class="comments"
+  id="comments"
+  data-utterances-theme-dark={themeDark}
+  data-utterances-theme-light={themeLight}
+>
+  <script
+    src="https://utteranc.es/client.js"
+    repo={repo}
+    issue-term="pathname"
+    theme={themeDark}
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<style>
+  .comments {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+</style>
+
+<script>
+  // Utterances only reads its `theme` attribute once at load, so later
+  // theme-toggle clicks must be relayed through postMessage instead.
+  function isDark() {
+    const explicit = document.documentElement.getAttribute("data-theme");
+    if (explicit === "dark" || explicit === "light") return explicit === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+
+  function syncUtterancesTheme() {
+    const commentsEl = document.getElementById("comments");
+    const frame = document.querySelector<HTMLIFrameElement>(".utterances-frame");
+    if (!commentsEl || !frame || !frame.contentWindow) return;
+    const theme = isDark()
+      ? commentsEl.dataset.utterancesThemeDark
+      : commentsEl.dataset.utterancesThemeLight;
+    try {
+      frame.contentWindow.postMessage({ type: "set-theme", theme }, "https://utteranc.es");
+    } catch {
+      // The iframe briefly shares our origin before navigating to
+      // utteranc.es, so posting can throw until that navigation finishes.
+    }
+  }
+
+  // Each navigation to a new article gets a fresh observer/poller — without
+  // disconnecting the previous page's, they'd accumulate across client-side
+  // navigations since document.documentElement persists across view
+  // transitions.
+  let observer: MutationObserver | undefined;
+  let poll: ReturnType<typeof setInterval> | undefined;
+
+  function initComments() {
+    observer?.disconnect();
+    if (poll) clearInterval(poll);
+
+    if (!document.getElementById("comments")) return;
+
+    observer = new MutationObserver(syncUtterancesTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    let tries = 0;
+    poll = setInterval(() => {
+      if (document.querySelector(".utterances-frame") || ++tries > 20) {
+        clearInterval(poll);
+        syncUtterancesTheme();
+      }
+    }, 250);
+  }
+
+  document.addEventListener("astro:page-load", initComments);
+</script>

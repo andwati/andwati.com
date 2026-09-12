@@ -1,0 +1,267 @@
+---
+import "@fontsource-variable/fraunces";
+import "@fontsource-variable/newsreader";
+import "@fontsource/jetbrains-mono";
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import { copyrightYearRange } from "../lib/copyright-year";
+import { siteConfig } from "../site.config";
+import Analytics from "../components/Analytics.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
+import SearchModal from "../components/SearchModal.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Narrows .container to the prose measure — opt in for pages with no wide layout needs. */
+  wide?: boolean;
+  /** Site-root-relative path to a per-page OG image, e.g. /images/og/writings/foo.png */
+  ogImage?: string;
+  /** Overrides the self-referential canonical (e.g. a writing first published elsewhere). */
+  canonicalUrl?: string;
+  /** Page type for the og:type meta — "article" for writings, "website" otherwise. */
+  ogType?: "website" | "article";
+  /** Extra JSON-LD object(s) beyond the sitewide WebSite/Person graph. */
+  structuredData?: object | object[];
+}
+const {
+  title,
+  description,
+  wide = true,
+  ogImage,
+  canonicalUrl,
+  ogType = "website",
+  structuredData,
+} = Astro.props;
+const metaDescription = description ?? siteConfig.description;
+const currentPath = Astro.url.pathname;
+const copyrightRange = await copyrightYearRange();
+const pageTitle = `${title} — ${siteConfig.title}`;
+const ogImageUrl = new URL(ogImage ?? "/favicon.ico", siteConfig.baseUrl).href;
+const pageCanonicalUrl = canonicalUrl ?? new URL(currentPath, siteConfig.baseUrl).href;
+
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteConfig.baseUrl}/#website`,
+      url: siteConfig.baseUrl,
+      name: siteConfig.title,
+      description: siteConfig.description,
+      author: { "@id": `${siteConfig.baseUrl}/#person` },
+    },
+    {
+      "@type": "Person",
+      "@id": `${siteConfig.baseUrl}/#person`,
+      name: siteConfig.author,
+      url: siteConfig.baseUrl,
+      sameAs: [siteConfig.social.github, siteConfig.social.twitter, siteConfig.social.youtube],
+    },
+  ],
+};
+const extraJsonLd = structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={metaDescription} />
+    <link rel="canonical" href={pageCanonicalUrl} />
+    <link rel="alternate" type="application/rss+xml" title={siteConfig.title} href="/rss.xml" />
+    <link rel="alternate" type="application/atom+xml" title={siteConfig.title} href="/atom.xml" />
+    <link rel="alternate" type="application/feed+json" title={siteConfig.title} href="/feed.json" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={siteConfig.title} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} />
+    {
+      extraJsonLd.map((data) => (
+        <script type="application/ld+json" set:html={JSON.stringify(data)} />
+      ))
+    }
+    <Analytics />
+    <ClientRouter />
+    <script is:inline data-astro-rerun>
+      // Runs before paint to avoid a flash of the wrong theme. Also reruns
+      // after every view-transition navigation, since Astro's head swap can
+      // otherwise clobber the data-theme attribute this sets on <html>.
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          if (stored === "light" || stored === "dark") {
+            document.documentElement.setAttribute("data-theme", stored);
+          }
+        } catch {}
+      })();
+    </script>
+    <style>
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--space-4) var(--space-6);
+        padding-block: var(--space-6);
+      }
+      .site-name {
+        font-family: var(--font-mono);
+        font-size: var(--font-size-sm);
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        color: var(--text);
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--space-5);
+      }
+      nav a {
+        font-family: var(--font-mono);
+        font-size: var(--font-size-sm);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--text-muted);
+        transition: color 0.2s var(--ease-out);
+      }
+      nav a:hover,
+      nav a[aria-current="page"] {
+        color: var(--accent);
+      }
+      .icon-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        width: 2rem;
+        height: 2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: color 0.2s var(--ease-out);
+      }
+      .icon-btn:hover {
+        color: var(--accent);
+      }
+      .icon-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+      .moon-icon {
+        display: block;
+      }
+      .sun-icon {
+        display: none;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .sun-icon {
+          display: block;
+        }
+        :root:not([data-theme="light"]) .moon-icon {
+          display: none;
+        }
+      }
+      :root[data-theme="dark"] .sun-icon {
+        display: block;
+      }
+      :root[data-theme="dark"] .moon-icon {
+        display: none;
+      }
+      main {
+        min-height: 60vh;
+      }
+      footer {
+        margin-top: var(--space-8);
+        padding-block: var(--space-6);
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--space-4);
+      }
+      footer nav {
+        gap: var(--space-4);
+      }
+    </style>
+  </head>
+  <body>
+    <div class:list={["container", { "container--wide": wide }]}>
+      <header>
+        <a class="site-name" href="/">{siteConfig.author.toUpperCase()}</a>
+        <nav aria-label="Primary">
+          {
+            siteConfig.nav.map((item) => (
+              <a href={item.url} aria-current={currentPath.startsWith(item.url) ? "page" : undefined}>
+                {item.name}
+              </a>
+            ))
+          }
+          <a href="/tags/" aria-current={currentPath.startsWith("/tags/") ? "page" : undefined}>Tags</a>
+          <button id="search-toggle" class="icon-btn" type="button" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+          <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle color theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </nav>
+      </header>
+      <main>
+        <slot />
+      </main>
+      <footer>
+        <p class="meta">© {copyrightRange} {siteConfig.author}</p>
+        <nav aria-label="Social">
+          <a href={siteConfig.social.github} class="meta" rel="me noopener" target="_blank">GitHub</a>
+          <a href={siteConfig.social.twitter} class="meta" rel="me noopener" target="_blank">Twitter</a>
+          <a href={siteConfig.social.youtube} class="meta" rel="me noopener" target="_blank">YouTube</a>
+          <a href={`mailto:${siteConfig.social.email}`} class="meta">Email</a>
+        </nav>
+      </footer>
+    </div>
+    <ScrollToTop />
+    <SearchModal />
+    <script is:inline data-astro-rerun>
+      document.getElementById("theme-toggle").addEventListener("click", function () {
+        var root = document.documentElement;
+        var current =
+          root.getAttribute("data-theme") ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        var next = current === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch {}
+      });
+    </script>
+  </body>
+</html>

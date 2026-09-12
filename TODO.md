@@ -1,0 +1,210 @@
+# Astro + Strapi Rebuild — TODO
+
+Tracking doc for the `astro-migration` branch. See the locked spec in the
+approved plan for full rationale on each decision referenced below.
+
+## Done
+
+- [x] Scaffold pnpm workspace (`apps/site` Astro, `apps/cms` Strapi + SQLite)
+- [x] Switch tooling to pnpm-only, add Biome for lint/format
+- [x] Define shared `content/` schema (writings, portfolio, bookshelf, blogs)
+      with TOML frontmatter matching the legacy Zola format
+- [x] Bookshelf schema covers both books (ISBN) and papers (DOI/arXiv id)
+- [x] Custom Astro content loader parsing `+++` TOML frontmatter directly
+      (no YAML conversion step)
+- [x] Basic list/detail pages for all four content types, verified running
+      end-to-end in-browser (`pnpm --filter site dev`)
+- [x] CLAUDE.md updated: no agent self-attribution in commits/PRs, commit
+      regularly after each working step
+- [x] Strapi content-type definitions matching the `content/` schema exactly
+      (writings, portfolio, bookshelf, blogs) — verified boots and registers
+      all four REST routes
+- [x] `apps/cms/Dockerfile.dev` + root `docker-compose.yml` for running
+      Strapi locally in a container (node:24-bookworm-slim, matches local
+      Node version); `apps/cms/Dockerfile` production multi-stage build for
+      later Dokploy deployment. Verified: builds, boots, admin panel and API
+      reachable, shared `content/` volume mounted at the right relative path
+
+## Content pipeline
+
+- [x] Strapi custom provider/lifecycle hooks that read + write the same
+      Markdown files in `content/` (Strapi's DB stays a disposable cache) —
+      `apps/cms/src/utils/content-{file,sync}.ts`, wired in `src/index.ts`
+- [x] Verify round-trip: edit in Strapi admin → file on disk updates, and
+      vice versa, without drift — verified create/update/delete via the
+      content-manager API, plus idempotent re-import across a restart
+- [x] Bookshelf ISBN lookup hook with local cover caching —
+      `apps/cms/src/utils/bookshelf-covers.ts` fetches from Open Library by
+      ISBN and caches into `apps/site/public/covers/`; verified end-to-end
+      (real cover downloaded, `cover_image` synced to file, cleaned up on
+      delete)
+- [x] Bookshelf paper lookup hook — Semantic Scholar backfills title/authors
+      by DOI/arXiv id when missing. No cover/thumbnail: neither Semantic
+      Scholar nor arXiv offers a reliable image source for papers, so
+      `cover_image` stays manually-set for papers (or gets one later from
+      the OG-image pipeline below)
+- [x] OG image auto-generation extended to all three content types
+      (writings, portfolio, bookshelf) using the new design system —
+      `scripts/generate-og-images.astro-site.mjs`, wired into `apps/site`'s
+      build script; `Base.astro` renders `og:image`/`twitter:image` from a
+      per-page `ogImage` prop (writings/bookshelf detail pages wire it in;
+      portfolio has no detail page yet to wire it into). Uses static-weight
+      Fraunces/Newsreader font packages, not the variable fonts the site
+      ships — satori's opentype.js parser can't read the variable fvar table
+- [x] `llms.txt` generation extended to cover all content types — unblocked
+      once `site.config.ts` existed (built above for feeds/meta anyway):
+      `scripts/generate-llms.astro-site.mjs` reads all four content
+      directories directly, wired into `apps/site`'s build script
+
+## Design system
+
+- [x] New typography scale + color system — dark-first (warm near-black,
+      cream text, coral accent) with a warm-paper light mode;
+      Fraunces (display/italic) + Newsreader (body) + JetBrains Mono
+      (nav/meta/code), fluid clamp() type scale. `src/styles/tokens.css`.
+      Referenced pixperk.tech and mcyoung.xyz — see the commit for specifics
+- [x] Motion primitives: CSS + native Web Animations API spring utility —
+      `apps/site/src/lib/spring.ts` (damped-oscillator keyframes,
+      `prefers-reduced-motion` aware). Not wired into any component yet —
+      the Three.js centerpiece below is the natural first user
+- [x] Base layout/components replacing the placeholder `Base.astro` — real
+      header/nav with active-link state, theme toggle, footer with social
+      links. Verified light + dark in-browser across home, a writing
+      detail page (TOC/headings), bookshelf, and 404
+- [x] Homepage redesign around the Three.js centerpiece as hero — the
+      constellation sits above a 3-column dashboard (latest writings,
+      portfolio, bookshelf), verified rendering and hover/click working
+      in-browser
+- [x] New 404 page concept (terminal easter egg retired) — "Page Fault",
+      now fully styled with the rest of the design system
+
+## Three.js centerpiece
+
+- [x] Constellation data model: nodes are real content entries (writings,
+      portfolio, bookshelf), edges are shared-tag connections — the same
+      relationship "related posts" already uses, drawn instead of listed.
+      No decorative/fake data. `src/lib/constellation-data.ts`
+- [x] Built as an isolated component (`Constellation.astro` + a plain
+      client `<script>` module, no framework), fibonacci-sphere layout,
+      hover raycasting with a title tooltip, click-through to the entry
+- [x] Fallback for `prefers-reduced-motion` (skips rotation/entrance
+      animation) and no-WebGL (`supportsWebGL()` check hides the canvas
+      entirely, falls back to a `<noscript>`-style plain count)
+- [x] Perf budget check — scene is trivially light (24 nodes, 12x12-segment
+      spheres, a handful of line-segment edges: well under 10k triangles),
+      renders at 100+fps uncapped with no dropped frames. The real cost is
+      the JS payload: three.js core pulls in ~130KB gzip / ~106KB brotli
+      regardless of `import *` vs named imports (`sideEffects: false`
+      already lets Rollup tree-shake fully; tried named imports, no size
+      change). That script is a deferred module (doesn't block first
+      paint/DCL) and the page was interactive in ~270ms in testing. No
+      code changes made — budget is fine as shipped
+
+## Content features carried over from the Zola site
+
+- [x] Series-nav (multi-part post series) — `writings/[...slug].astro`,
+      uses the existing `extra.series`/`extra.series_index` fields
+- [x] Table of contents — sticky sidebar on desktop (>=74rem), falls back to
+      the original inline list below the tags on narrower viewports; same
+      heading data rendered via a shared `TocList.astro` so the two aren't
+      duplicated markup by hand. `.container--wide` bumped 64rem → 76rem so
+      big monitors use more of the screen (prose column itself stays capped
+      at 42rem for readability — the extra width is the TOC gutter);
+      verified at 390/900/1180/1920px with no distortion at any width
+- [x] Prev/next post navigation
+- [x] Related posts (tag-based, tag-overlap ranked, limit 3)
+- [x] Per-tag descriptions on tag archive pages — `/tags/` + `/tags/[tag]/`,
+      descriptions ported from `zola.toml`'s `[extra.tag_descriptions]`
+- [x] `llms_description` meta (site-wide default in `site.config.ts` +
+      per-post override, rendered as `<meta name="description">` in
+      `Base.astro`)
+- [x] RSS/JSON feeds — `/rss.xml`, `/feed.json`
+- [x] Sitemap + robots.txt — `@astrojs/sitemap`, static `public/robots.txt`
+- [x] Code block syntax highlighting — `toml-content-loader.ts` renders
+      fenced code blocks through `highlight.js`'s core build with only the
+      11 languages content actually uses registered (no bundled-theme/WASM
+      grammar weight like shiki, which was tried first and swapped out for
+      this lighter option); `.hljs-*` token classes in `global.css` are
+      colored from the existing design tokens (`--accent`, `--text-muted`,
+      ...), so they already switch with the site's theme with no extra
+      `[data-theme]` rules needed
+
+## Search & comments
+
+- [x] Pagefind integration — indexes the build output (`pnpm build` runs
+      `astro build && pagefind --site dist`), `/search/` page using
+      Pagefind's default UI; verified with a real query in a browser
+- [x] Comments: kept Utterances (not Webmentions) — `Comments.astro`, wired
+      to `andwati/andwati.com`, with the same dark/light theme-sync-via-
+      postMessage behavior the legacy site had, adapted to this site's
+      `data-theme` attribute. The `rel="webmention"` link was removed since
+      it's unused now. `sws.toml`'s CSP updated to allow `utteranc.es`
+      (script-src, frame-src) — without that the widget is silently blocked
+      in production
+
+## Analytics
+
+- [x] Umami — self-hosted at `analytics.andwati.com`. `Analytics.astro`
+      renders the tracker script from `PUBLIC_UMAMI_SCRIPT_URL` +
+      `PUBLIC_UMAMI_WEBSITE_ID` (set in `apps/site/.env`, gitignored — copy
+      into the production environment's env vars too); `sws.toml`'s CSP
+      updated to allow that host in `script-src`/`connect-src`
+
+## Migration from the legacy Zola site
+
+- [x] Script/process to convert `content/posts/*.md` into the new
+      `content/writings/` schema — `scripts/migrate-posts-to-writings.mjs`,
+      additive only (`content/posts/` untouched), re-runnable/idempotent.
+      2 of 20 posts (`from-c-to-machine-code`,
+      `self-hosting-gitea-and-mirroring-github`) use note/tip/warning/danger
+      callout shortcodes — flagged by the script, still left as-is in the
+      body text
+- [x] note/tip/warning/danger callout shortcode rendering — the legacy
+      `{% <note> %} ... {% </note> %}` blocks are converted to styled
+      `.callout` markup by `toml-content-loader.ts`'s `renderCallouts()`
+      (runs before the body's markdown parse), styled in `global.css` to
+      match the new design system. Verified in-browser on
+      `from-c-to-machine-code`
+- [x] Preserve slugs/URLs via redirects — the script generates 301s from
+      `/posts/<slug>/` to `/writings/<slug>/` into `sws.toml`, idempotently
+- [x] Migrate `content/archive/`, `content/about.md` equivalents —
+      `/archive/` groups every published writing by year; `/about/` reframes
+      the legacy copy around the site's "digital legacy" identity while
+      preserving its PGP and security contact details. Both are in the main
+      navigation, and the linked `.well-known` files are copied into Astro's
+      public output
+- [ ] Verify RSS subscribers and inbound links survive the cutover — can
+      only really be checked once this is deployed live (**needs your
+      input**: this is a production-cutover verification, not a build-time
+      one)
+
+## Infra / deployment
+
+- [x] Wire Strapi into the Dokploy deployment alongside the Astro build —
+      `docker-compose.prod.yml` defines both production services, persistent
+      CMS/Git volumes, reverse-proxy settings, and secret-only configuration
+- [x] Build trigger decided and implemented: Strapi commits Markdown and
+      generated covers to Git, pushes the production branch, then calls the
+      Dokploy Compose deploy webhook so Astro rebuilds from the durable commit
+- [x] Update `Dockerfile`/`sws.toml` for Astro's `apps/site/dist` output,
+      current security headers, legacy redirects, and the custom 404 page
+- [ ] Launch the production Compose application and configure its domains,
+      secrets, GitHub token, and deploy webhook in Dokploy — repository-side
+      setup is complete in `DEPLOYMENT.md`; host access is still required
+
+## Cleanup
+
+- [ ] Remove Zola-specific files (`zola.toml`, `templates/`, `sass/`,
+      `themes/`, `static/`, `Makefile`, `bin/update-zola`, `content/posts/`,
+      `content/archive/_index.md`, `content/about.md`, `content/_index.md`,
+      legacy OG/llms scripts) — verified safe: root `Dockerfile` already
+      builds `apps/site` (not `zola build`), nothing in `apps/site` reads
+      those content files, and `content/writings/` has all 20 posts from
+      `content/posts/`. Root `package.json`'s `legacy:*` scripts already
+      removed. **Blocked**: the actual `git rm` was refused by the
+      permission system as irreversible destruction — run it yourself (fully
+      reversible via git history/revert since these are tracked files):
+      `git rm -r templates/ sass/ themes/ static/ zola.toml Makefile bin/
+      content/posts/ content/archive/_index.md content/about.md
+      content/_index.md scripts/generate-llms.mjs
+      scripts/generate-og-images.mjs`
