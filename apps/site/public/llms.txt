@@ -26,7 +26,6 @@
 - [The One Thing Nobody Tells You About WiFi Hotspots on Arch Linux](https://andwati.com/writings/wifi-hotspot-arch/): A minimal Arch install is great until NetworkManager silently fails to find a binary you didn't know you needed
 - [Setting up Obsidian sync in Windows](https://andwati.com/writings/obsidian-sync/): Syncing Obsidian in Windows with Windows Task Scheduler with git
 - [The Single Byte That Kills Your Exploit: Understanding Endianness](https://andwati.com/writings/the-single-byte-that-kills-your-exploit-understanding-endianness/): Problem: Computers speak different languages, like people
-- [Why This Site Exists](https://andwati.com/writings/example-first-post/): A short note on what this new site is, and why it's more than a tech blog.
 - [mmuctf 2025 writeup](https://andwati.com/writings/mmuctf2025/): mmuctf 2025 challenges writeup
 - [Configure Vue.js app With Tailwind CSS](https://andwati.com/writings/vuejs-tailwind/): Tailwindcss in vuejs
 - [Subresource Integrity](https://andwati.com/writings/subresource-integrity/): Understanding Subresource Integrity

@@ -104,3 +104,15 @@ feed_url = "https://.../rss.xml"
 
 Body is a one-to-two sentence blurb on why you follow it. No live feed
 fetching — this list is hand-curated and static.
+
+## Markdown extras (all body content)
+
+- **LaTeX**: `$inline$` and `$$block$$` math renders to static HTML/MathML
+  at build time (`marked-katex-extension` in `toml-content-loader.ts`) — no
+  client-side JS shipped for it.
+- **Callouts**: `{% <note> %} ... {% </note> %}` (also `tip`/`warning`/
+  `danger`) renders as a styled callout box.
+- **YouTube embeds**: paste a plain `<iframe src="https://www.youtube-
+  nocookie.com/embed/VIDEO_ID" ...></iframe>` — it's automatically wrapped
+  in a responsive 16:9 container, gets `loading="lazy"`, and emits
+  `VideoObject` structured data. No shortcode needed.

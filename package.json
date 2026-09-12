@@ -7,13 +7,12 @@
     "dev": "concurrently -n site,cms -c blue,magenta \"pnpm --filter site dev\" \"pnpm --filter cms develop\"",
     "dev:site": "pnpm --filter site dev",
     "dev:cms": "pnpm --filter cms develop",
+    "build": "pnpm run build:site && pnpm run build:cms",
     "build:site": "pnpm --filter site build",
     "build:cms": "pnpm --filter cms build",
+    "lighthouse": "pnpm --filter site lighthouse",
     "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "legacy:generate:llms": "node scripts/generate-llms.mjs",
-    "legacy:generate:og": "node scripts/generate-og-images.mjs",
-    "legacy:build": "npm run legacy:generate:llms && npm run legacy:generate:og && zola build"
+    "lint:fix": "biome check --write ."
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.11",

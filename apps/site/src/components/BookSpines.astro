@@ -136,11 +136,16 @@ const { items, activeSlug } = Astro.props;
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>("[data-spines]").forEach((root) => {
-    const track = root.querySelector<HTMLElement>("[data-track]");
-    const next = root.querySelector<HTMLButtonElement>("[data-next]");
-    next?.addEventListener("click", () => {
-      track?.scrollBy({ left: 320, behavior: "smooth" });
+  // astro:page-load fires on first load and after every client-side
+  // navigation (bookshelf index <-> detail pages both render this
+  // component), so the button keeps working once view transitions swap it in.
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll<HTMLElement>("[data-spines]").forEach((root) => {
+      const track = root.querySelector<HTMLElement>("[data-track]");
+      const next = root.querySelector<HTMLButtonElement>("[data-next]");
+      next?.addEventListener("click", () => {
+        track?.scrollBy({ left: 320, behavior: "smooth" });
+      });
     });
   });
 </script>

@@ -14,6 +14,7 @@ import hljsX86asm from "highlight.js/lib/languages/x86asm";
 import hljsXml from "highlight.js/lib/languages/xml";
 import hljsYaml from "highlight.js/lib/languages/yaml";
 import { Marked } from "marked";
+import markedKatex from "marked-katex-extension";
 import { parse as parseToml } from "smol-toml";
 
 const FRONTMATTER_RE = /^\+\+\+\r?\n([\s\S]*?)\r?\n\+\+\+\r?\n?([\s\S]*)$/;
@@ -91,20 +92,26 @@ function highlightCode(code: string, lang: string | undefined): string {
   return `<pre class="hljs"><code>${inner}</code></pre>`;
 }
 
-const marked = new Marked({
-  renderer: {
-    heading(token) {
-      const plainText = stripInlineMarkdown(token.text);
-      const slug = slugify(plainText);
-      const html = this.parser.parseInline(token.tokens);
-      currentHeadings.push({ depth: token.depth, slug, text: plainText });
-      return `<h${token.depth} id="${slug}">${html}</h${token.depth}>`;
-    },
-    code(token) {
-      return highlightCode(token.text, token.lang);
+// Renders $inline$ and $$block$$ LaTeX to static HTML/MathML at build time
+// (katex.renderToString under the hood) — no client-side JS shipped, unlike
+// the legacy Zola site's KaTeX auto-render script.
+const marked = new Marked(
+  markedKatex({ throwOnError: false }),
+  {
+    renderer: {
+      heading(token) {
+        const plainText = stripInlineMarkdown(token.text);
+        const slug = slugify(plainText);
+        const html = this.parser.parseInline(token.tokens);
+        currentHeadings.push({ depth: token.depth, slug, text: plainText });
+        return `<h${token.depth} id="${slug}">${html}</h${token.depth}>`;
+      },
+      code(token) {
+        return highlightCode(token.text, token.lang);
+      },
     },
   },
-});
+);
 
 const CALLOUT_ICONS: Record<string, string> = {
   note: '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>',
@@ -152,6 +159,30 @@ async function renderCallouts(body: string): Promise<string> {
     );
   }
   return out;
+}
+
+// Matches a plain <iframe> pointing at a youtube-nocookie embed, however an
+// author pasted it (any attribute order/extras) — the legacy Zola site had a
+// `{{ youtube(id=...) }}` shortcode that wrapped the embed in a responsive
+// container, added `loading="lazy"`, and emitted VideoObject JSON-LD;
+// migrating posts flattened those calls to bare <iframe> tags (see
+// migrate-posts-to-writings.mjs), losing all three. Detecting the plain
+// <iframe> here restores them for any post, old or new, with no shortcode
+// syntax required.
+const YOUTUBE_IFRAME_RE =
+  /<iframe\b[^>]*\bsrc="https:\/\/www\.youtube-nocookie\.com\/embed\/([\w-]+)[^"]*"[^>]*>\s*<\/iframe>/g;
+
+/** Wraps youtube-nocookie <iframe> embeds in a responsive container and
+ * adds `loading="lazy"` when missing, returning the transformed HTML plus
+ * the extracted video ids (for VideoObject JSON-LD). */
+function enhanceYoutubeEmbeds(html: string): { html: string; youtubeIds: string[] } {
+  const youtubeIds: string[] = [];
+  const out = html.replace(YOUTUBE_IFRAME_RE, (tag, id) => {
+    youtubeIds.push(id);
+    const withLazy = /\bloading=/.test(tag) ? tag : tag.replace("<iframe", '<iframe loading="lazy"');
+    return `<div class="youtube-wrapper">${withLazy}</div>`;
+  });
+  return { html: out, youtubeIds };
 }
 
 function walk(dir: string): string[] {
@@ -205,12 +236,13 @@ export function tomlContentLoader(contentDir: string): Loader {
           const id = relPath.replace(/\/index\.md$/, "").replace(/\.md$/, "");
           currentHeadings = [];
           const trimmedBody = await renderCallouts(body.trim());
-          const html = await marked.parse(trimmedBody);
+          const parsedHtml = await marked.parse(trimmedBody);
+          const { html, youtubeIds } = enhanceYoutubeEmbeds(parsedHtml);
           const wordCount = trimmedBody.split(/\s+/).filter(Boolean).length;
           const readingMinutes = Math.max(1, Math.round(wordCount / 200));
           store.set({
             id,
-            data: { ...data, wordCount, readingMinutes },
+            data: { ...data, wordCount, readingMinutes, youtubeIds },
             rendered: { html, metadata: { headings: currentHeadings } },
           });
         }

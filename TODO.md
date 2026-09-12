@@ -134,18 +134,21 @@ approved plan for full rationale on each decision referenced below.
 - [x] Pagefind integration — indexes the build output (`pnpm build` runs
       `astro build && pagefind --site dist`), `/search/` page using
       Pagefind's default UI; verified with a real query in a browser
-- [ ] Webmentions integration (replacing Utterances) — **plumbing only**:
-      `Base.astro` links `rel="webmention"` to a webmention.io endpoint for
-      `andwati.com`, but nothing displays received mentions yet, and the
-      endpoint won't receive anything until the domain is actually
-      registered/verified on webmention.io (**needs your input**: create an
-      account, verify domain ownership, then I can build the display side)
+- [x] Comments: kept Utterances (not Webmentions) — `Comments.astro`, wired
+      to `andwati/andwati.com`, with the same dark/light theme-sync-via-
+      postMessage behavior the legacy site had, adapted to this site's
+      `data-theme` attribute. The `rel="webmention"` link was removed since
+      it's unused now. `sws.toml`'s CSP updated to allow `utteranc.es`
+      (script-src, frame-src) — without that the widget is silently blocked
+      in production
 
 ## Analytics
 
-- [ ] Stand up Plausible or Umami on the Dokploy host, wire up tracking
-      snippet (replacing Google Analytics) — **needs your input**: requires
-      your Dokploy access, not something I can provision from the repo
+- [x] Umami — self-hosted at `analytics.andwati.com`. `Analytics.astro`
+      renders the tracker script from `PUBLIC_UMAMI_SCRIPT_URL` +
+      `PUBLIC_UMAMI_WEBSITE_ID` (set in `apps/site/.env`, gitignored — copy
+      into the production environment's env vars too); `sws.toml`'s CSP
+      updated to allow that host in `script-src`/`connect-src`
 
 ## Migration from the legacy Zola site
 
@@ -192,5 +195,16 @@ approved plan for full rationale on each decision referenced below.
 ## Cleanup
 
 - [ ] Remove Zola-specific files (`zola.toml`, `templates/`, `sass/`,
-      `themes/`, `content/posts/`, legacy OG/llms scripts) once each has a
-      working Astro/Strapi equivalent — progressively, not all at once
+      `themes/`, `static/`, `Makefile`, `bin/update-zola`, `content/posts/`,
+      `content/archive/_index.md`, `content/about.md`, `content/_index.md`,
+      legacy OG/llms scripts) — verified safe: root `Dockerfile` already
+      builds `apps/site` (not `zola build`), nothing in `apps/site` reads
+      those content files, and `content/writings/` has all 20 posts from
+      `content/posts/`. Root `package.json`'s `legacy:*` scripts already
+      removed. **Blocked**: the actual `git rm` was refused by the
+      permission system as irreversible destruction — run it yourself (fully
+      reversible via git history/revert since these are tracked files):
+      `git rm -r templates/ sass/ themes/ static/ zola.toml Makefile bin/
+      content/posts/ content/archive/_index.md content/about.md
+      content/_index.md scripts/generate-llms.mjs
+      scripts/generate-og-images.mjs`

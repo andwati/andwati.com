@@ -1,0 +1,160 @@
+---
+---
+
+<div class="minimap" aria-hidden="true">
+  <div class="minimap-content"></div>
+  <div class="minimap-viewport"></div>
+</div>
+
+<style>
+  .minimap {
+    display: none;
+  }
+
+  @media (min-width: 90rem) {
+    .minimap {
+      display: block;
+      position: fixed;
+      top: var(--space-6);
+      bottom: var(--space-6);
+      right: var(--space-5);
+      width: 9rem;
+      z-index: 10;
+      cursor: grab;
+      overflow: hidden;
+    }
+
+    .minimap:active {
+      cursor: grabbing;
+    }
+
+    .minimap-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: top left;
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.6;
+      filter: saturate(0.65);
+    }
+
+    .minimap-content :is(h1, h2, h3) {
+      text-decoration-thickness: 0.18em;
+    }
+
+    .minimap-viewport {
+      position: absolute;
+      left: -0.4rem;
+      right: -0.4rem;
+      border: 1px solid var(--accent);
+      background: var(--accent-muted);
+      border-radius: var(--radius-sm);
+      pointer-events: none;
+    }
+  }
+</style>
+
+<script>
+  function initMinimap(signal: AbortSignal) {
+    const minimap = document.querySelector(".minimap");
+    const source = document.querySelector(".article-main");
+    if (!(minimap instanceof HTMLElement) || !(source instanceof HTMLElement)) {
+      return;
+    }
+
+    const content = minimap.querySelector(".minimap-content");
+    const viewport = minimap.querySelector(".minimap-viewport");
+    if (!(content instanceof HTMLElement) || !(viewport instanceof HTMLElement)) {
+      return;
+    }
+
+    const clone = source.cloneNode(true) as HTMLElement;
+    clone
+      .querySelectorAll("script, [id]")
+      .forEach((el) => el.removeAttribute("id"));
+    clone.querySelectorAll("script").forEach((el) => el.remove());
+    clone
+      .querySelectorAll("a, button, input, select, textarea")
+      .forEach((el) => el.setAttribute("tabindex", "-1"));
+    content.replaceChildren(clone);
+    content.style.width = `${source.offsetWidth}px`;
+
+    let scale = 1;
+    let sourceTop = 0;
+
+    function layout() {
+      sourceTop = source.getBoundingClientRect().top + window.scrollY;
+      const sourceHeight = source.scrollHeight;
+      const mapHeight = minimap.clientHeight;
+      scale = Math.min(mapHeight / sourceHeight, 1);
+      content.style.transform = `scale(${scale})`;
+      update();
+    }
+
+    function update() {
+      const maxTop = minimap.clientHeight - viewport.offsetHeight;
+      const top = (window.scrollY - sourceTop) * scale;
+      viewport.style.height = `${window.innerHeight * scale}px`;
+      viewport.style.top = `${Math.max(0, Math.min(top, Math.max(maxTop, 0)))}px`;
+    }
+
+    function seek(clientY: number) {
+      const rect = minimap.getBoundingClientRect();
+      const y = clientY - rect.top;
+      const target = sourceTop + y / scale - window.innerHeight / 2;
+      window.scrollTo({ top: target, behavior: "auto" });
+    }
+
+    let dragging = false;
+
+    minimap.addEventListener(
+      "pointerdown",
+      (e) => {
+        dragging = true;
+        minimap.setPointerCapture(e.pointerId);
+        seek(e.clientY);
+      },
+      { signal },
+    );
+
+    minimap.addEventListener(
+      "pointermove",
+      (e) => {
+        if (dragging) seek(e.clientY);
+      },
+      { signal },
+    );
+
+    minimap.addEventListener("pointerup", () => (dragging = false), { signal });
+
+    let ticking = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+      },
+      { signal },
+    );
+
+    window.addEventListener("resize", layout, { signal });
+
+    layout();
+  }
+
+  // Each navigation gets a fresh controller so the previous page's
+  // window-level scroll/resize listeners are torn down before the new
+  // page's initMinimap() adds its own — otherwise they'd accumulate across
+  // client-side navigations between article pages.
+  let controller: AbortController | undefined;
+  document.addEventListener("astro:page-load", () => {
+    controller?.abort();
+    controller = new AbortController();
+    initMinimap(controller.signal);
+  });
+</script>

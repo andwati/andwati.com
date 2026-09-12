@@ -15,7 +15,7 @@ const projects = (
   {
     projects.map((entry) => (
       <div class="card">
-        <h3>{entry.data.title}</h3>
+        <h2 class="entry-title">{entry.data.title}</h2>
         <p class="meta">{entry.data.role}</p>
         {entry.data.description && <p>{entry.data.description}</p>}
         {entry.data.outcome && <p>{entry.data.outcome}</p>}

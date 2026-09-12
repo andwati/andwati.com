@@ -20,6 +20,7 @@ const writings = defineCollection({
     canonical_url: z.string().optional(),
     wordCount: z.number().optional(),
     readingMinutes: z.number().optional(),
+    youtubeIds: z.array(z.string()).default([]),
     taxonomies,
     extra: z
       .object({

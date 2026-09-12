@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# Lighthouse CI report artifacts
+.lighthouseci/
+
 # macOS-specific files
 .DS_Store
 

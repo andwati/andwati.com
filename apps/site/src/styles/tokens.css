@@ -10,8 +10,11 @@
   --text: #1c1a15;
   --text-muted: #6f6a5c;
   --border: rgba(28, 26, 21, 0.12);
-  --accent: #d1502f;
-  --accent-muted: rgba(209, 80, 47, 0.12);
+  /* #d1502f measured 4.0:1 on --bg, just under WCAG AA's 4.5:1 for normal
+     text (used at small sizes in nav/tags/links) — darkened to 5.7:1 while
+     keeping the same hue. */
+  --accent: #a84025;
+  --accent-muted: rgba(168, 64, 37, 0.12);
 
   --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
   --font-body: "Newsreader Variable", ui-serif, Georgia, serif;

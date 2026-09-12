@@ -60,6 +60,21 @@ CONTENT_GIT_COMMIT_NAME="andwati.com CMS"
 CONTENT_GIT_COMMIT_EMAIL=andwati-cms@users.noreply.github.com
 ```
 
+Site analytics (read at build time by `apps/site`, so these must be set on
+the `site` service before it builds, not just at runtime):
+
+```dotenv
+PUBLIC_UMAMI_SCRIPT_URL=https://analytics.andwati.com/script.js
+PUBLIC_UMAMI_WEBSITE_ID=9eef8fba-c932-4488-ae23-6b84553e8c29
+```
+
+`Analytics.astro` silently no-ops if either is unset — safe to deploy without
+them, but analytics won't record anything until both are present at build
+time. `sws.toml`'s CSP already allows `analytics.andwati.com` and
+`utteranc.es` (comments); if the Umami host ever changes, update both that
+CSP and these two vars together, or the tracker will be silently blocked in
+production instead of erroring visibly.
+
 Generate each random secret independently; do not reuse the local development
 values from `docker-compose.yml`.
 

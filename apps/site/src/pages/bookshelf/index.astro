@@ -1,4 +1,5 @@
 ---
+import "katex/dist/katex.min.css";
 import { getCollection, render } from "astro:content";
 import BookSpines from "../../components/BookSpines.astro";
 import Base from "../../layouts/Base.astro";
@@ -37,9 +38,9 @@ const withBodies = await Promise.all(
             )}
           </a>
           <div>
-            <h3>
+            <h2 class="entry-title">
               <a href={`/bookshelf/${entry.id}/`}>{entry.data.title}</a> <span class="tag">{entry.data.kind}</span>
-            </h3>
+            </h2>
             <p class="meta">
               {entry.data.authors.join(", ")}
               {entry.data.date_finished && <> · Read {entry.data.date_finished.toDateString()}</>}

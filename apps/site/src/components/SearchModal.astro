@@ -1,0 +1,193 @@
+---
+---
+
+<div id="search-overlay" class="search-overlay" aria-hidden="true">
+  <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="search-mount"></div>
+    <p class="search-empty-hint meta">
+      Search only works against a built site (`pnpm build` runs Pagefind after `astro build`) — it
+      has no index to query in `astro dev`.
+    </p>
+    <div class="search-footer">
+      <span>Navigate: <kbd>↑</kbd> <kbd>↓</kbd></span>
+      <span>Select: <kbd>Enter</kbd></span>
+      <span>Close: <kbd>Esc</kbd></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: var(--space-7) var(--space-5);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.2s var(--ease-out),
+      visibility 0.2s var(--ease-out);
+  }
+
+  .search-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-modal {
+    width: 100%;
+    max-width: 38rem;
+    max-height: calc(100vh - 2 * var(--space-7));
+    overflow-y: auto;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    transform: translateY(-0.5rem);
+    transition: transform 0.2s var(--ease-out);
+  }
+
+  .search-overlay.active .search-modal {
+    transform: translateY(0);
+  }
+
+  .search-empty-hint {
+    margin: 0;
+  }
+
+  .search-footer {
+    display: none;
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+  }
+
+  .search-overlay.active .search-footer {
+    display: flex;
+  }
+
+  .search-footer kbd {
+    font-family: inherit;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0 0.35em;
+  }
+
+  /* Pagefind UI theming, mapped onto this site's tokens. */
+  #search-mount {
+    --pagefind-ui-scale: 0.9;
+    --pagefind-ui-primary: var(--text);
+    --pagefind-ui-text: var(--text);
+    --pagefind-ui-background: transparent;
+    --pagefind-ui-border: var(--border);
+    --pagefind-ui-tag: var(--bg);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 6px;
+    --pagefind-ui-font: var(--font-body);
+  }
+</style>
+
+<script>
+  let pagefindLoaded = false;
+  let pagefindLoading: Promise<void> | undefined;
+
+  function loadPagefind(): Promise<void> {
+    if (pagefindLoaded) return Promise.resolve();
+    if (pagefindLoading) return pagefindLoading;
+
+    pagefindLoading = new Promise((resolve) => {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "/pagefind/pagefind-ui.css";
+      document.head.appendChild(link);
+
+      const script = document.createElement("script");
+      script.src = "/pagefind/pagefind-ui.js";
+      script.onload = () => {
+        const mount = document.getElementById("search-mount");
+        const hint = document.querySelector(".search-empty-hint");
+        // biome-ignore lint/correctness/noUndeclaredVariables: loaded from /pagefind/pagefind-ui.js
+        if (mount && typeof PagefindUI !== "undefined") {
+          // biome-ignore lint/correctness/noUndeclaredVariables: loaded from /pagefind/pagefind-ui.js
+          new PagefindUI({ element: mount, showSubResults: true, showImages: false });
+          hint?.remove();
+        }
+        pagefindLoaded = true;
+        resolve();
+      };
+      script.onerror = () => resolve();
+      document.body.appendChild(script);
+    });
+
+    return pagefindLoading;
+  }
+
+  function initSearchModal(signal: AbortSignal) {
+    const overlay = document.getElementById("search-overlay");
+    const toggle = document.getElementById("search-toggle");
+    if (!overlay || !toggle) return;
+
+    const isOpen = () => overlay.classList.contains("active");
+
+    const open = () => {
+      overlay.classList.add("active");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      loadPagefind().then(() => {
+        overlay.querySelector<HTMLInputElement>(".pagefind-ui__search-input")?.focus();
+      });
+    };
+
+    const close = () => {
+      overlay.classList.remove("active");
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    };
+
+    toggle.addEventListener(
+      "click",
+      (e) => {
+        e.preventDefault();
+        isOpen() ? close() : open();
+      },
+      { signal },
+    );
+
+    overlay.addEventListener(
+      "click",
+      (e) => {
+        if (e.target === overlay) close();
+      },
+      { signal },
+    );
+
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+          e.preventDefault();
+          isOpen() ? close() : open();
+          return;
+        }
+        if (e.key === "Escape" && isOpen()) close();
+      },
+      { signal },
+    );
+  }
+
+  let controller: AbortController | undefined;
+  document.addEventListener("astro:page-load", () => {
+    controller?.abort();
+    controller = new AbortController();
+    initSearchModal(controller.signal);
+  });
+</script>

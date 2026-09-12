@@ -21,7 +21,7 @@ const bookshelf = (await getCollection("bookshelf")).slice(0, 3);
 
   <div class="columns">
     <section>
-      <p class="eyebrow">Writings</p>
+      <h2 class="eyebrow">Writings</h2>
       {
         writings.length === 0 ? (
           <p class="meta">Nothing published yet.</p>
@@ -40,7 +40,7 @@ const bookshelf = (await getCollection("bookshelf")).slice(0, 3);
     </section>
 
     <section>
-      <p class="eyebrow">Portfolio</p>
+      <h2 class="eyebrow">Portfolio</h2>
       {
         portfolio.length === 0 ? (
           <p class="meta">Nothing published yet.</p>
@@ -57,7 +57,7 @@ const bookshelf = (await getCollection("bookshelf")).slice(0, 3);
     </section>
 
     <section>
-      <p class="eyebrow">Bookshelf</p>
+      <h2 class="eyebrow">Bookshelf</h2>
       {
         bookshelf.length === 0 ? (
           <p class="meta">Nothing on the shelf yet.</p>

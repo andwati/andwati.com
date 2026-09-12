@@ -9,18 +9,59 @@ for (const w of writings) {
     tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
   }
 }
-const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+const tags = [...tagCounts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 ---
 
 <Base title="All Tags">
-  <h1>All Tags</h1>
-  <ul>
-    {
-      tags.map(([tag, count]) => (
-        <li>
-          <a href={`/tags/${tag}/`}>{tag}</a> ({count})
-        </li>
-      ))
-    }
-  </ul>
+  <div class="tags-page">
+    <h1>All Tags</h1>
+    <div class="tags-cloud">
+      {
+        tags.map(([tag, count]) => (
+          <a href={`/tags/${tag}/`} class="tag-link">
+            {tag}
+            <sup class="tag-count">{count}</sup>
+          </a>
+        ))
+      }
+    </div>
+  </div>
 </Base>
+
+<style>
+  .tags-page {
+    text-align: center;
+  }
+
+  .tags-page h1 {
+    display: block;
+  }
+
+  .tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: var(--space-6);
+  }
+
+  .tag-link {
+    font-size: var(--font-size-lg);
+    color: var(--text);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: flex-start;
+    transition: color 0.2s var(--ease-out);
+  }
+
+  .tag-link:hover {
+    color: var(--accent);
+  }
+
+  .tag-count {
+    font-size: 0.65em;
+    color: var(--text-muted);
+    margin-left: 0.2rem;
+  }
+</style>

@@ -25,9 +25,9 @@ const description = siteConfig.tagDescriptions[tag];
   {
     writings.map((entry) => (
       <div class="card">
-        <h3>
+        <h2 class="entry-title">
           <a href={`/writings/${entry.id}/`}>{entry.data.title}</a>
-        </h3>
+        </h2>
         <p class="meta">{entry.data.date.toDateString()}</p>
       </div>
     ))

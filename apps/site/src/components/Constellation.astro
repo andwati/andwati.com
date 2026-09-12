@@ -52,19 +52,46 @@ const graph = await buildConstellationGraph();
 
 <script>
   import type { ConstellationGraph } from "../lib/constellation-data";
-  import { mountConstellation, supportsWebGL } from "../lib/constellation-scene";
+  import { supportsWebGL } from "../lib/webgl-support";
 
-  const root = document.querySelector<HTMLElement>("[data-constellation]");
-  const canvas = root?.querySelector<HTMLElement>("[data-canvas]");
-  const tooltip = root?.querySelector<HTMLElement>("[data-tooltip]");
-  const dataEl = document.getElementById("constellation-data");
+  // A plain top-level mount only ever runs once per module URL, so
+  // navigating away from "/" and back via a view transition would leave the
+  // canvas blank. astro:page-load fires on first load and every subsequent
+  // client-side navigation to "/", and the stored dispose() tears down the
+  // previous mount's WebGL context/listeners/rAF loop first.
+  let dispose: (() => void) | undefined;
 
-  if (root && canvas && tooltip && dataEl?.textContent && supportsWebGL()) {
-    const graph: ConstellationGraph = JSON.parse(dataEl.textContent);
-    if (graph.nodes.length > 0) {
-      mountConstellation(canvas, tooltip, graph);
+  document.addEventListener("astro:page-load", () => {
+    dispose?.();
+    dispose = undefined;
+
+    const root = document.querySelector<HTMLElement>("[data-constellation]");
+    const canvas = root?.querySelector<HTMLElement>("[data-canvas]");
+    const tooltip = root?.querySelector<HTMLElement>("[data-tooltip]");
+    const dataEl = document.getElementById("constellation-data");
+    if (!root) return;
+
+    if (!(canvas && tooltip && dataEl?.textContent && supportsWebGL())) {
+      root.style.display = "none";
+      return;
     }
-  } else if (root) {
-    root.style.display = "none";
-  }
+    const graph: ConstellationGraph = JSON.parse(dataEl.textContent);
+    if (graph.nodes.length === 0) {
+      root.style.display = "none";
+      return;
+    }
+
+    // three.js (~130KB gzip) is dynamically imported here instead of at the
+    // top of this module, and only once the browser is idle — this is
+    // decorative, so it must never compete with first paint / LCP for main-
+    // thread time. Falls back to a short timeout on browsers without
+    // requestIdleCallback (Safari).
+    const schedule =
+      window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 200));
+    schedule(async () => {
+      const { mountConstellation } = await import("../lib/constellation-scene");
+      dispose = mountConstellation(canvas, tooltip, graph);
+      root.style.display = "";
+    });
+  });
 </script>
