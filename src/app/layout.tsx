@@ -58,6 +58,7 @@ const websiteLd = {
   author: { "@type": "Person", name: site.name },
 };
 
+const isProd = process.env.NODE_ENV === "production";
 const gaId = "G-9XLTKZF07C";
 
 const umamiScript = process.env.PUBLIC_UMAMI_SCRIPT_URL;
@@ -83,17 +84,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <JsonLd data={websiteLd} />
         <Layout>{children}</Layout>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${gaId}');`}
-        </Script>
-        {umamiScript && umamiId && (
+        {isProd && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '${gaId}');`}
+            </Script>
+          </>
+        )}
+        {isProd && umamiScript && umamiId && (
           <Script defer src={umamiScript} data-website-id={umamiId} />
         )}
       </body>
