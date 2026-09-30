@@ -1,27 +1,58 @@
 {
-  "name": "andwati-com",
+  "name": "andwati-nextgen",
+  "version": "0.1.0",
   "private": true,
-  "type": "module",
-  "packageManager": "pnpm@11.21.0",
   "scripts": {
-    "dev": "concurrently -n site,cms -c blue,magenta \"pnpm --filter site dev\" \"pnpm --filter cms develop\"",
-    "dev:site": "pnpm --filter site dev",
-    "dev:cms": "pnpm --filter cms develop",
-    "build": "pnpm run build:site && pnpm run build:cms",
-    "build:site": "pnpm --filter site build",
-    "build:cms": "pnpm --filter cms build",
-    "lighthouse": "pnpm --filter site lighthouse",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write ."
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome check",
+    "format": "biome format --write",
+    "lint:content": "prettier --check \"content/**/*.md\" && cspell --no-progress",
+    "format:content": "prettier --write \"content/**/*.md\"",
+    "spell": "cspell --no-progress",
+    "check": "biome check && pnpm lint:content",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "katex": "^0.18.9",
+    "next": "16.3.6",
+    "next-mdx-remote": "^6.0.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "rehype-katex": "^7.0.1",
+    "rehype-pretty-code": "^0.14.5",
+    "rehype-raw": "^7.0.0",
+    "rehype-stringify": "^10.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "shiki": "^4.4.3",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.11",
-    "@fontsource/fraunces": "^5.3.0",
-    "@fontsource/newsreader": "^5.3.0",
-    "@resvg/resvg-js": "^2.6.2",
-    "concurrently": "^10.0.5",
-    "satori": "^0.29.0",
-    "smol-toml": "^1.8.0",
-    "wawoff2": "^2.0.1"
+    "@biomejs/biome": "2.4.2",
+    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "cspell": "^10.3.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@12.4.2",
+  "lint-staged": {
+    "content/**/*.md": [
+      "prettier --write",
+      "cspell --no-progress --no-must-find-files"
+    ],
+    "*.{ts,tsx,mjs,json,css}": "biome check --write --no-errors-on-unmatched"
   }
 }
