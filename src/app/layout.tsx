@@ -59,7 +59,7 @@ const websiteLd = {
 };
 
 const isProd = process.env.NODE_ENV === "production";
-const gaId = "G-9XLTKZF07C";
+const gaId = "G-4HGRQ9QNPD";
 
 const umamiScript = process.env.PUBLIC_UMAMI_SCRIPT_URL;
 const umamiId = process.env.PUBLIC_UMAMI_WEBSITE_ID;
